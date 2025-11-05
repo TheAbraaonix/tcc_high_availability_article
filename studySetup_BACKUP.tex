@@ -1,0 +1,214 @@
+
+%\input{tables/tableSubsumedStudies}
+
+
+
+
+
+\begin{comment}
+
+\todo{
+
+\begin{itemize}
+    
+    \item Questoes de pesquisa (alinhadas com as discussoes que faremos na secao \ref{sec:analysis})
+    
+    \item Descricao do metodo (Mapeamento Sistematico), com pontos chaves do protocolo
+    
+    \item Dados ``demograficos'' dos estudos selecionados (a definir, dependendo do espaco disponivel)
+    
+\end{itemize}
+
+}
+
+  
+\end{comment}
+
+
+
+
+\fabiano{To achieve our goal, we analyzed the literature of gamification applied to software testing. 
+We performed a systematic mapping (SM)~\cite{Petersen2008}, which is a type of secondary study that provides an overview of the investigated area and indicates research opportunities. 
+It is guided by a predefined and evolvable research protocol~\cite{Fabbri2013a}. 
+Key elements of the protocol are next presented. %, including search string, surveyed database, study selection criteria, and data extraction procedures. 
+%The full protocol can be found at \todo{INSERIR URL AQUI...}. 
+}
+
+\vspace{.15cm}
+\noindent
+\textbf{Research Question:}
+Our research question is: 
+\emph{How has gamification been investigated to support software testing?}
+As shown in Sections~\ref{sec:results} and \ref{sec:analysis}, we draw the answer to this question based on six perspectives, which are addressed by the following sub-questions (all regarding gamification as a way to support software testing):
+
+\vspace{-.1cm}
+
+\begin{enumerate}
+    \item \emph{In which context has gamification been applied?}
+    \item \emph{Which gamification elements have been used?}
+    \item \emph{Which goals have been pursued?}
+    \item \emph{Which testing techniques have been addressed?}
+    \item \emph{Which testing process phases have been covered?}
+    \item \emph{Which testing levels have been addressed?}
+\end{enumerate}
+
+
+%\vspace{.2cm}
+\noindent
+\textbf{Search string and surveyed database:} 
+The base search string was 
+``\texttt{(gamif*) AND (test*)}''.
+The idea was to define a generic search string that would fetch a broad range of results\fabianocr{\footnote{Notice that the term ``\emph{\texttt{test*}}'' led to the matching of studies from areas other than Computing (\eg studies from medical sciences that addressed a gamified software which has somehow been ``tested'').}}, so that we could carefully analyze in order to reach our final set of studies.
+The string was applied in April, 2018, to the Scopus search engine\footnote{\url{http://www.scopus.com} - last accessed on 19-June-2018.}.
+In total, 540~studies were retrieved. 
+The study selection steps (next described) resulted in the following numbers:
+Pre-selection: 47~studies; 
+Final selection: 9~studies~\cite{
+P01_Garcia2017, 
+P02_Rojas2016, 
+P03_Rojas2017, 
+P04_Anderson2015, 
+P05_YujianFu2016, 
+P06_DalSasso2017, 
+P07_Parizi2016, 
+P08_Liechti2017, 
+P09_Laurent2017}; 
+and
+Backward snowballing: 6~studies~\cite{
+P10_Sheth2012, 
+P11_Bell2011, 
+P12_Rojas2016, 
+P13_Clegg2017, 
+6363241, 
+P15_Dubois}.
+\fabiano{The final set is composed of~15 studies 
+\cite{
+P01_Garcia2017, 
+P02_Rojas2016, 
+P03_Rojas2017, 
+P04_Anderson2015, 
+P05_YujianFu2016, 
+P06_DalSasso2017, 
+P07_Parizi2016, 
+P08_Liechti2017, 
+P09_Laurent2017, 
+P10_Sheth2012, 
+P11_Bell2011, 
+P12_Rojas2016, 
+P13_Clegg2017, 
+6363241, 
+P15_Dubois}. 
+Notice that the snowballing step required the analysis of additional 277 -- \ie non-duplicated --  references; it was performed in a single round.}
+Also notice that the final set does not include 4 studies~\cite{
+P16_Parizi2015, 
+P17_Anderson2014,
+P18_Clarke2014,
+P19_Mastrodicasa2014} 
+that were subsumed (\ie updated or extended) by more recent studies. 
+%The subsuming and subsumed studies are listed in Table~\ref{tab:SubsumedStudies}.
+The subsuming and subsumed studies are:
+
+\vspace{-.1cm}
+\begin{itemize}
+    \item \citet{P04_Anderson2015} subsumes \citet{P17_Anderson2014}
+    \item \citet{P05_YujianFu2016} subsumes \citet{P18_Clarke2014}
+    \item \citet{P06_DalSasso2017} subsumes \citet{P19_Mastrodicasa2014}
+    \item \citet{P07_Parizi2016} subsumes \citet{P16_Parizi2015}
+\end{itemize}
+
+
+\input{tables/tableClassificationsAndCategories}
+
+
+%\vspace{.1cm}
+\noindent
+\textbf{Study selection criteria and procedures:}
+%To avoid subjectivity in \fabiano{study selection} and focus only on gamification in \fabiano{the} software testing activity context, 
+\fabiano{We defined the inclusion \fabiano{\textbf{(i)}} and exclusion criteria \fabiano{\textbf{(e)}} listed next. 
+We selected studies that passed \textbf{i1} or \textbf{i2},  and did not pass any of the exclusion criteria.}
+
+%\important{Vejam que omiti os paragrafos que explicavam os criterios de inclusao e exclusao. A propria natureza dos criterios eh auto-explicativa, entao os paragrafos sao desnecessarios.}
+
+%\textbf{Inclusion criteria:} It was created one inclusion criteria capable of accepting theoretical and practical studies on the use of gamification in software development context:
+
+\begin{description}
+
+    \item [i1.] Proposes or applies a technology (approach, tool, framework, method etc.) to gamify software testing education. %(teaching/learning).
+
+    \item [i2.] Proposes or applies a technology (approach, tool, framework, method etc.) to gamify the practice of software testing.
+    
+    \item [e1.] Does not address gamification of software testing.
+    
+    \item [e2.] Is not written in English.
+    
+    \item [e3.] Is a secondary study (Section~\ref{sec:limitation} discusses these studies).
+    
+\end{description}
+
+%\vspace{.2cm}
+\noindent
+\textbf{Data extraction procedures:}
+Data extraction basically consisted of elaborating a summary of each selected study, with special attention to the support provided by gamification to the testing activity (either for education or practice). 
+While elaborating the summary, we applied the six classifications associated with each sub-question. 
+The full set of categories is shown in Table~\ref{tab:tableClassificationsAndCategories}. 
+It is important to highlight that the lists of categories which are specific to gamification 
+(namely, 
+\concept{used gamification elements}
+and
+\concept{gamification goals})
+evolved during the analysis and data extraction steps. 
+In other words, we did not have comprehensive lists of categories beforehand. 
+Moreover, we do not claim these lists are complete and definite, since more studies can be added to our final set in the future.
+
+
+We also highlight that the inclusion of the option \concept{any} in some classifications 
+(namely, 
+\concept{application context}, 
+\concept{testing techniques}, 
+\concept{testing levels}, and 
+\concept{testing process phases})
+means that a given study could have been classified with any of the specific categories within that classification. 
+Some notes regarding the classifications come next.
+%option was addressed  any of the testing techniques (or even all of them) may be used in a proposed gamified approach (consider the same for application context, testing levels and phases). 
+
+%Thus, even though we see in the table  \ref{tab:resultsClassifications} that no study is explicitly classified in the "Functional Testing" option, it does not mean that anyone did not have considered this technique. Actually, it means that all of the studies classified in the "any" option includes functional testing technique  (and all of the others) as candidate to be gamified.
+
+%\input{tables/tableClassificationsAndCategories}
+
+
+
+
+
+\begin{comment}
+  % [Fabiano] Deixei aqui a explicação completa dos conceitos de dynamics, mechanics e components. Na sequência, coloquei uma versão bem mais curta (para salvar espaço).
+
+\emph{Used gamification element}: 
+According to \citet{werbach2012win}, the game elements are small pieces we can use to build a game; or a toolkit. They are divided into three types: dynamics, mechanics, and components. \emph{Dynamics} are at the highest level of abstraction in games. An important example of game dynamic is \concept{progression}; it is present in the game, but in an abstract level. 
+To make it perceptive, one can use mechanics and components. \concept{Mechanics} are processes that makes the dynamics be achieved. For example, \concept{feedback} is a game mechanic used to inform the user the results of his choices, both positive and negative; as the users progress in the the game, \fabiano{feedback} is given to serve as a sense of progress (the dynamic). 
+Finally, \concept{components} are the concrete parts of the games that instantiates the other two. Following the previous examples, \concept{leader board} is a component that provides visual feedback about user's progression. Other example is \concept{level}, which also gives the sense of progress. Summarizing: dynamics are achieved by the use of mechanics that drives the user's actions by the use of some components.
+    
+\concept{That said, we clarify that we} chose not to characterize the selected studies considering the game dynamics and mechanics. Our decision \fabiano{relies on} the fact that, being abstract, they can not be directly instantiated into the games (or in the gamified systems, in our case). 
+For example, we can notice that points and levels (game components) give a sense of progression (game dynamics); however, points and levels are visible for \fabiano{whom} they are specific, but progression is not (it is abstract).   
+Thus, we decided to choose the small pieces of the games the ``players'' can really see \fabiano{-- \ie the \concept{components} -- and to which we refer to as \concept{elements} in the remainder of this paper.}
+
+\end{comment}
+
+
+
+
+
+\emph{Used gamification element}: 
+According to \citet{werbach2012win}, the game elements are small pieces we can use to build a game; or a toolkit. They are divided into three types: 
+\concept{dynamics}, 
+\concept{mechanics}, and 
+\concept{components}. 
+\concept{Dynamics} and \concept{mechanics} are more abstract concepts, not directly instantiable into the games (or in the gamified systems, in our case), and not always and easily noticed by the ``players''. 
+For example, we can notice that points and levels (game components) give a sense of progression (game dynamics); however, points and levels are visible for \fabiano{whom} they are specific to, but progression is not (it is abstract).   
+Thus, we decided to choose the small pieces of the games the ``players'' can really see \fabiano{-- \ie the \concept{components} -- and to which we refer to as \concept{elements} along this paper.}
+
+    
+\emph{Gamification goal:}  
+We highlight that educational/business objectives, and gamification goals might not \fabiano{be} the same. 
+For example, the CODE DEFENDERS game (\cite{P02_Rojas2016, P03_Rojas2017, P12_Rojas2016, P13_Clegg2017} has the educational objective of teaching mutation testing. 
+On the other hand, its gamification goals are, mainly, to increase enjoyment throughout the learning process, \fabiano{to} increase students' engagement and motivation, and \fabiano{to} improve students' skills such as their knowledge, performance in testing activities, and creation of stronger tests and mutants.
+    

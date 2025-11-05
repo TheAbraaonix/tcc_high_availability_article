@@ -1,0 +1,222 @@
+% new colours
+
+% \definecolor{gray}{rgb}{0.85,0.85,0.85} % defini��o de cor cinza
+\newcommand{\SetRowColor}[1]{\noalign{\gdef\RowColorName{#1}}\rowcolor{\RowColorName}}
+\newcommand{\mymulticolumn}[3]{\multicolumn{#1}{>{\columncolor{\RowColorName}}#2}{#3}}
+
+% \definecolor{MyGray}{rgb}{0.85,0.85,0.85}
+% \definecolor{MyDarkGray}{rgb}{0.7,0.7,0.7}
+
+\definecolor{shadecolor}{rgb}{0.8, 0.8, 0.8}
+
+
+
+\definecolor{darkgreen}{cmyk}{1,0,1,0}
+\definecolor{MyGray}{rgb}{0.85,0.85,0.85}
+\definecolor{MyDarkGray}{rgb}{0.65,0.65,0.65}
+\newcommand{\ingles}[1] {{{\color{black} #1}}}
+\newcommand{\fr}[1]{#1}
+\newcommand{\fabiano}[1]{{{\color{black} #1}}}
+\newcommand{\fabianonew}[1]{{{\color{black} #1}}}
+\newcommand{\fabianocr}[1]{{{\color{black} #1}}}
+\newcommand{\gabriela}[1]{{\color{darkgreen} #1}}
+
+
+\newcommand{\red}[1]{{{\color{red} #1}}}
+\newcommand{\important}[1]{{{\color{red}[IMPORTANT: #1]}}}
+\newcommand{\todo}[1]{{{\color{red}[TODO: #1]}}}
+\newcommand{\sn}[1]{{\textsf{S#1}}}
+\newcommand{\ie}{\textit{i.e.}\xspace}
+\newcommand{\eg}{\emph{e.g.}\xspace}
+
+\definecolor{lightgray}{gray}{0.9}
+
+
+% languages
+
+\newcommand{\aspectj}{{\normalfont{AspectJ}}\xspace}
+\newcommand{\caesarj}{{\normalfont{CaesarJ}}\xspace}
+\newcommand{\aspectwerkz}{{\normalfont{AspectWerkz}}\xspace}
+\newcommand{\jbossaop}{{\normalfont{JBossAOP}}\xspace}
+\newcommand{\jboss}{{\normalfont{JBoss}}\xspace}
+\newcommand{\springaop}{{\normalfont{SpringAOP}}\xspace}
+\newcommand{\java}{{\normalfont{Java}}\xspace}
+\newcommand{\fortran}{{\normalfont{Fortran}}\xspace}
+\newcommand{\simula}{{\normalfont{SIMULA}}\xspace}
+\newcommand{\smalltalk}{{\normalfont{Smalltalk}}\xspace}
+\newcommand{\squeak}{{\normalfont{Squeak}}\xspace}
+\newcommand{\cansi}{{\normalfont{C}}\xspace}
+%\newcommand{\cplusplus}{\normalfont{C++}\xspace}
+\newcommand{\cplusplus}{{\normalfont{C\footnotesize{++}}}\xspace}
+\newcommand{\csharp}{{\normalfont{C\#}}\xspace}
+\newcommand{\clanguage}{{\normalfont{C}}\xspace}
+\newcommand{\pascal}{{\normalfont{Pascal}}\xspace}
+\newcommand{\objectpascal}{{\normalfont{Object Pascal}}\xspace}
+\newcommand{\modulatwo}{{\normalfont{Modula-2}}\xspace}
+\newcommand{\modulathree}{{\normalfont{Modula-3}}\xspace}
+\newcommand{\eiffel}{{\normalfont{Eiffel}}\xspace}
+\newcommand{\php}{{\normalfont{PHP}}\xspace}
+\newcommand{\aspectcplusplus}{{\normalfont{AspectC\footnotesize{++}}}\xspace}
+\newcommand{\aspectcansi}{{\normalfont{AspectC}}\xspace}
+\newcommand{\aspectcsharp}{{\normalfont{AspectC\#}}\xspace}
+\newcommand{\aspectsmalltalk}{{\normalfont{AspectS}}\xspace}
+\newcommand{\aophp}{\normalfont{{AOPHP}}\xspace}
+\newcommand{\uml}{{\normalfont{UML}}\xspace}
+\newcommand{\xml}{{\normalfont{XML}}\xspace}
+\newcommand{\xmi}{{\normalfont{XMI}}\xspace}
+
+
+
+% tools
+
+\newcommand{\proteum}{\emph{Proteum}\xspace}
+\newcommand{\proteumim}{\emph{Proteum/IM}\xspace}
+\newcommand{\proteumaj}{\emph{Proteum/AJ}\xspace}
+\newcommand{\proteumajtwo}{\emph{Proteum/AJv2}\xspace}
+
+\newcommand{\jabuti}{\emph{JaBUTi}\xspace}
+\newcommand{\jabutiaj}{\emph{JaBUTi/AJ}\xspace}
+\newcommand{\jabutiweb}{\emph{JaBUTi/Web}\xspace}
+
+\newcommand{\mujava}{$\mu Java$\xspace}
+\newcommand{\mudel}{\emph{MuDel}\xspace}
+\newcommand{\mudelgen}{\emph{mudelgen}\xspace}
+\newcommand{\ajmutator}{\emph{AjMutator}\xspace}
+\newcommand{\ajte}{\emph{AJTE}\xspace}
+\newcommand{\aspectra}{\emph{Aspectra}\xspace}
+\newcommand{\jtest}{\emph{JTest}\xspace}
+\newcommand{\rostra}{\emph{Rostra}\xspace}
+\newcommand{\mutapro}{\emph{Muta-Pro}\xspace}
+\newcommand{\ajato}{\emph{AJATO}\xspace}
+
+
+\newcommand{\ant}{\emph{Ant}\xspace}
+\newcommand{\junit}{\emph{JUnit}\xspace}
+\newcommand{\simulink}{\emph{Simulink}\xspace}
+\newcommand{\purevariants}{\emph{pure::variants}\xspace}
+\newcommand{\hephaestus}{\emph{Hephaestus}\xspace}
+
+
+%\newcommand{\ibatis}{\emph{iBATIS}\xspace}
+%\newcommand{\hw}{\emph{HeathWatcher}\xspace}
+%\newcommand{\mm}{\emph{MobileMedia}\xspace}
+%\newcommand{\tsd}{\emph{Toll System Demonstrator}\xspace}
+
+\newcommand{\ibatis}{\element{iBATIS}\xspace}
+\newcommand{\hw}{\element{HealthWatcher}\xspace}
+\newcommand{\mm}{\element{MobileMedia}\xspace}
+\newcommand{\ajhd}{\element{AJHotDraw}\xspace}
+\newcommand{\ts}{\element{TollSystemDemonstrator}\xspace}
+
+
+\newcommand{\stratego}{\emph{Stratego/XT}\xspace}
+\newcommand{\aspectjfront}{\emph{AspectJ-front}\xspace}
+
+\newcommand{\aterm}{\textsf{aterm}\xspace}
+\newcommand{\ajc}{\textsf{ajc}\xspace}
+\newcommand{\abc}{\textsf{abc}\xspace}
+
+\newcommand{\rational}{\emph{IBM-Rational Rose}\xspace}
+\newcommand{\poseidon}{\emph{Poseidon}\xspace}
+\newcommand{\argouml}{\emph{ArgoUML}\xspace}
+\newcommand{\umbrello}{\emph{Umbrello}\xspace}
+
+\newcommand{\sdmetrics}{\emph{SDMetrics}\xspace}
+\newcommand{\opencore}{\emph{Open Core}\xspace}
+
+
+
+% others
+
+\newcommand{\wrt}{\normalfont{with respect to}\xspace}
+
+\newcommand{\refasset}{\emph{RefASSET}\xspace}
+\newcommand{\reftest}{\emph{RefTEST}\xspace}
+
+\newcommand{\framework}{\emph{framework}\xspace}
+\newcommand{\web}{\emph{Web}\xspace}
+\newcommand{\bytecode}{\normalfont{bytecode}\xspace}
+\newcommand{\bytecodes}{\normalfont{bytecodes}\xspace}
+\newcommand{\jvm}{\normalfont{JVM}\xspace}
+
+\newcommand{\cfg}{\textsf{CFG}\xspace}
+\newcommand{\icfg}{\textsf{ICFG}\xspace}
+\newcommand{\fcfg}{\textsf{FCFG}\xspace}
+\newcommand{\ccfg}{\textsf{CCFG}\xspace}
+\newcommand{\aocfg}{\textsf{AOCFG}\xspace}
+\newcommand{\aodu}{\textsf{AODU}\xspace}
+\newcommand{\pwdu}{\textsf{PWDU}\xspace}
+\newcommand{\pcdu}{\textsf{PCDU}\xspace}
+\newcommand{\madu}{\textsf{MADU}\xspace}
+\newcommand{\ig}{\textsf{IG}\xspace}
+\newcommand{\dug}{\textsf{DUG}\xspace}
+\newcommand{\defusegraph}{\emph{Def-Use Graph}\xspace}
+\newcommand{\fsm}{\textsf{FSM}\xspace}
+\newcommand{\free}{\textsf{FREE}\xspace}
+\newcommand{\asm}{\textsf{ASM}\xspace}
+
+\newcommand{\ufscar}{\normalfont{UFSCar}\xspace}
+\newcommand{\inctsec}{\normalfont{INCT-SEC}\xspace}
+\newcommand{\lapes}{\normalfont{LaPES}\xspace}
+\newcommand{\dc}{\normalfont{DC}\xspace}
+\newcommand{\dcufscar}{\normalfont{DC/UFSCar}\xspace}
+\newcommand{\lapesgdms}{\normalfont{LaPES-GDMS}\xspace}
+\newcommand{\tiriba}{\normalfont{Tiriba}\xspace}
+\newcommand{\ppgcc}{\normalfont{PPG-CC}\xspace}
+
+
+
+\newcommand{\csOne}{\normalfont{Case~Study~1}\xspace}
+\newcommand{\csTwo}{\normalfont{Case~Study~2}\xspace}
+\newcommand{\conj}[1]{{\textsf{#1}}}
+\newcommand{\cepre}{\textsf{$SS_{pre}$}\xspace}
+\newcommand{\ce}{\textsf{$SS$}\xspace}
+
+\newcommand{\ec}{\normalfont{specific challenge}\xspace}
+
+
+\newcommand{\ch}[1]{{\textit{#1}}}
+
+\newcommand{\chOne}{\ch{How to deal with the exponential growth of AS configurations that should be tested}\xspace}
+
+\newcommand{\chTwo}{\ch{How to guarantee the correctness of AS configurations that have never been tested in advance}\xspace}
+
+\newcommand{\chThree}{\ch{How to detect and avoid incorrect AS configurations defined at runtime}\xspace}
+    
+\newcommand{\chFour}{\ch{How to test AS that run in a distributed and heterogeneous environment}\xspace}
+    
+\newcommand{\chFive}{\ch{How to deal with user interference in the AS configuration}\xspace}
+
+\newcommand{\chSix}{\ch{How to anticipate all the relevant context changes and when they could impact the behaviour of ASs}\xspace}
+    
+\newcommand{\chSeven}{\ch{How to deal with context-dependent control and data flow in ASs}\xspace}
+    
+\newcommand{\chEight}{\ch{How to keep test cases updated and precise and how to keep track between them and system requirements and components in a changing environment}\xspace}
+    
+\newcommand{\chNine}{\ch{How to determine what sensors and frequency of monitoring data of ASs and its execution environment must be observed}\xspace}
+    
+\newcommand{\chTen}{\ch{How to simulate realistic AS execution environment and workload}\xspace}
+
+\newcommand{\chEleven}{\ch{How to automatically generate test cases for a changing environment}\xspace}
+
+\newcommand{\chTwelve}{\ch{How to perform formal verification of adaptive behaviour}\xspace}
+
+\newcommand{\chThirteen}{\ch{How to define generic approaches for any adaptation process of adaptive system}\xspace}
+
+\newcommand{\de}{\textit{SC-}}
+
+
+% with parameters
+
+
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\wild}[1]{{``\texttt{#1}''}}
+\newcommand{\opname}[1]{{\textsf{#1}}}
+\newcommand{\smallop}[1]{{\small\textsf{#1}}}
+%\newcommand{\fault}[1]{{\footnotesize\textsf{#1}}}
+\newcommand{\fault}[1]{{\textsf{#1}}}
+\newcommand{\element}[1]{{\textsf{#1}}}
+\newcommand{\concept}[1]{{\emph{#1}}}
+\newcommand{\declare}{\code{declare}}
+
+\newcommand{\group}[1]{{{Group #1}}}

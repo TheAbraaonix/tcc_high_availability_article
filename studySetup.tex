@@ -1,0 +1,70 @@
+To achieve our goal, we performed a Systematic Mapping Study (SMS)~\cite{Petersen2008}, which is a type of secondary study used to provide a structured overview of research in a given field and identify trends, gaps, and opportunities. The SMS followed a predefined research protocol based on guidelines proposed by Fabbri et al.~\cite{Fabbri2013a}. This chapter presents the key components of our mapping methodology.
+
+\vspace{0.15cm}
+\noindent
+\textbf{Research Question:} \\
+Our main research question is: \\
+\emph{How have high availability strategies been applied to support artificial intelligence systems in cloud computing environments?}
+
+To answer this overarching question, we considered the following sub-questions:
+
+\begin{enumerate}
+    \item \emph{What types of high availability approaches are applied to AI systems in the cloud?}
+    \item \emph{Which AI areas or techniques are most frequently addressed (e.g., GenAI, ML, DL, data analytics)?}
+    \item \emph{What kinds of cloud environments (private, public, hybrid) are discussed?}
+    \item \emph{What are the common challenges and limitations identified in the studies?}
+    \item \emph{What trends or research gaps are observable over time (2015–2025)?}
+\end{enumerate}
+
+\vspace{0.15cm}
+\noindent
+\textbf{Search String and Surveyed Databases:} \\
+Our search strategy was designed to retrieve a comprehensive set of studies related to high availability, resilience, and fault tolerance in the context of AI and cloud computing. The final search string used was:
+
+\begin{quote}
+\texttt{("alta disponibilidade" OR "tolerância a falhas" OR "resiliência" OR "fault tolerance" OR "high availability") AND ("inteligência artificial" OR "IA" OR "artificial intelligence" OR "AI") AND ("nuvem" OR "cloud computing" OR "cloud environment")}
+\end{quote}
+
+The search covered studies published between \textbf{2015 and 2025}, and was applied to the following academic databases:
+
+\begin{itemize}
+    \item \textbf{IEEE Xplore:} 144 results retrieved. After applying filters for \textit{Conferences, Journals, and Early Access Articles}, 2 studies were selected as relevant.
+    \item \textbf{ACM Digital Library:} 562 results retrieved. After filtering for \textit{Research Articles} and \textit{Proceedings or Journals}, 3 studies were included.
+\end{itemize}
+
+We also considered using Scopus as part of our initial strategy, as it is one of the most comprehensive scientific databases available. However, our institution does not have an active partnership with Elsevier, which made it impossible to access Scopus content for this study.
+
+\vspace{0.15cm}
+\noindent
+\textbf{Study Selection Criteria and Procedures:} \\
+We defined explicit inclusion and exclusion criteria to ensure the selection of studies aligned with our research scope. Studies were selected only if they satisfied at least one inclusion criterion and none of the exclusion criteria.
+
+\begin{description}
+    \item[i1.] Published between 2015 and 2025, addressing high availability, resilience, or fault tolerance applied to AI systems in cloud computing.
+    \item[i2.] Peer-reviewed sources: journals, academic book chapters, theses/dissertations, and proceedings from respected conferences (e.g., IEEE, ACM).
+    \item[i3.] Written in English or Portuguese.
+    
+    \item[e1.] Not peer-reviewed (e.g., blogs, non-academic websites).
+    \item[e2.] Lacked empirical or technical foundation (e.g., purely opinion-based).
+    \item[e3.] Duplicates (e.g., same study in both conference and journal).
+    \item[e4.] Focused only on generic cloud infrastructure, high-availability or semantic networks without linking to AI.
+\end{description}
+
+During the screening process, we observed that many of the retrieved studies focused on the use of AI or machine learning to improve the availability, resilience, or fault tolerance of cloud infrastructures. However, the primary objective of our study is the inverse: to understand how high availability strategies are applied to support AI systems deployed in cloud environments. As a result, studies that addressed AI as a means to improve HA, rather than as the target of HA strategies, were excluded from the final selection.
+
+The study selection process followed three main steps. First, we applied the search string in each of the databases. From this, a total of 706 studies were retrieved (144 from IEEE and 562 from ACM). Then, based on the analysis of titles, abstracts, and author keywords, we reduced this number to 25 potentially relevant studies. Finally, we performed a full-text reading of those 25, resulting in 5 studies ~\cite{10828941, 9805840, 10.1145/3689031.3717459, 10.1145/3698038.3698523, 10.1145/3680256.3721320} selected for inclusion in our final dataset.
+
+\vspace{0.15cm}
+\noindent
+\textbf{Data Extraction Procedures:} \\
+For each selected study, we extracted metadata and content focusing on:
+
+\begin{itemize}
+    \item Type of high availability strategy used (e.g., redundancy, replication, load balancing)
+    \item AI technique or application area addressed (e.g., machine learning, deep learning)
+    \item Type of cloud environment used (e.g., public, private, hybrid)
+    \item Challenges and limitations reported
+    \item Observed trends over time
+\end{itemize}
+
+These data points were used to answer the sub-questions outlined earlier. The extraction process was iterative, allowing the categorization schemes to evolve as new patterns emerged from the studies.

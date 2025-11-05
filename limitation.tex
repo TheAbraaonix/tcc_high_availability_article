@@ -1,0 +1,84 @@
+
+%\important{
+
+%Aqui eh importante falar de dois tipos de limitacoes: as que estao relacionadas aas buscas feitas; e as que estao relacionadas aas analises feitas.
+
+%O primeiro tipo eh mais trivial... basicamente sao as mesmas em todos os trabalhos de SLR
+
+%O segundo grupo eh um pouco mais complicado, mas, de forma geral, deve dizer que podem ter ocorrido falhas na compreensao das abordagens e, por consequencia, o mapeamento pode ter sido prejudicado. De qualquer forma, tentou-se ser metodico e sistematico, analisando-se todos os trabalhos de forma imparcial, para prover um mapeamento preciso e que possa ser util para a comunidade de teste de SA, sejam pesquisadores ou practitioners (ACHO QUE ALGO NESSA LINHA JAH TINHA SIDO DITO NAS LIMITATIONS DO ARTIGO DO SAST). 
+%Eh importante mencionar que todos os rounds do estudo (busca, selecao, extracao e sintese) foram realizadas pelos mesmos pesquisadores, o que diminui a chance de variacao dos resultados do mapeamento.
+
+%}
+
+%\todo{limitacoes: refinar string de busca porque alguns usaram serious games e  software development process, mas trataram no texto.}
+\fabiano{
+The scope of the search for primary studies is key concern in our study, since it is restricted to:
+(i) a single search engine (namely, Scopus); and
+(ii) a one-step, backward snowballing round.
+%; and  (iii) specialists from our research group.
+Moreover, in our search we have used a narrowed list of gamification- and testing-related terms.
+%, composed by ``gamif*'', ``test*''
+That said, we argue that the Scopus engine retrieves a broad range of results since it surveys a plethora of indexed databases~\cite{Kitchenham2016}.
+%. Moreover, Scopus have been used as a single source of prior literature review studies~\citet{}.
+Nevertheless, we believe the inclusion of other repositories and search terms (such as ``software quality'' and ``development process'') may result in the selection of other relevant studies that can enhance and extend our classifications.
+Besides this, more rounds of backward snowballing, as well rounds of forward snowballing, are also  worth to be done. 
+}
+
+
+
+
+% ==================== RELATED WORK ===================
+% Fabiano: "brevemente dos objetivos, grupos de artigos analisados, similaridades e diferenças com o seu trabalho"
+
+
+\fabiano{
+Regarding related research, 
+\citet{S01_Pedreira2015} performed a systematic mapping to characterize gamification applied to the software development process. 
+They analyzed 29 studies published until 2014 and answered questions about software engineering processes that have been gamified, used game elements, and research methods that were used on software gamification quality evaluation.
+Our goals differ from \citeauthor{S01_Pedreira2015}'s, given that we did not focus on all software development activities but software testing.
+
+
+\citet{S02_Mantyla20216} presented a very brief report on a literature review they carried out about gamification of software testing. 
+They used the study of \citet{S01_Pedreira2015} to perform forward and backward snowballing. After this, they searched for more studies using the Google Search Engine. 
+In total, they selected 20 items\footnote{Notice that from the 20 \emph{items} selected by \citet{S02_Mantyla20216}, only 2 could have been potentially included in our dataset. From the remaining ones, 2 items are studies also selected by us, 14 are not proper literature material (\eg web sites and slides) and 2 did not pass our selection criteria.} and quantified results regarding types of testing, systems under test, roles of individuals, used game elements, studies that performed empirical evidence, studies that presented support constructs to gamification, and challenges to gamify software testing.
+In our work, we also analyzed the retrieved papers based on types of testing (more specifically, \concept{testing techniques}), and used game elements. Differently from their research, we provided deeper information; we classified the selected studies considering three perspectives about software testing (e.g. techniques, levels, and process phases); besides this, we gave more fine-grained details about the applied classifications and results. 
+
+\citet{S03_Fraser2017} discussed issues software testing has been facing, and introduced gamification as a solution to address them. He presented applications of software testing in three domains: education, practice, and crowdsourcing.
+Differently from our work and from prior work~\cite{S01_Pedreira2015,S02_Mantyla20216},  \citeauthor{S03_Fraser2017} did not map, review, or characterized studies found in the literature; not even tried to answer a research question. Instead, he raised and presented the potential of use of some existing gamified tools based on its application domain. 
+%We consider the valuable contribution this study may have; it can, for example, support educators to choose which gamified tool they can use to teach software testing; or help demotivated practitioners to perform testing in a gamified tool increasing, thus, their motivation; or help industry to obtain a solution for a complex problem using crowdsourcing. Now, educators, students, practitioners, companies, have an initial list of gamified options to adopt aiming to reach their goals.
+
+
+}
+
+% ----- S01: Gamification in Software Testing - A SM -----
+% Objetivos (O que fizeram)
+
+%\citet{S01_Pedreira2015}'s work was returned in our automatic search. Analyzing it, we noticed that they did not focused in software testing, but in several software engineering areas. The authors carried out a systematic literature mapping aiming to characterize the state of the art to identify gaps and research opportunities. They answered questions about software engineering processes that have been gamified, used game elements, and research methods that were used on software gamification quality evaluation.
+%% Grupo de artigos analisados
+%They found 29 studies published until June 2014; of these, three involved software testing, but one focused in gamification to crowdsource software development, slightly mentioning software testing in an example. We did not considered this study because, different from the ones which proposed gamification in any software development phase, this one did not provide enough information about gamification in software testing.
+%% Similaritades e Diferenca com o nosso
+%Our work is close to \citet{S01_Pedreira2015}'s in a sense of being a secondary study to characterize the state of the art considering gamification in software engineering. However, one of the differences is that they focused in characterize gamification applied to all of the software development phases, while we target a specific one: software testing. As done by \citeauthor{S01_Pedreira2015}, we answered which elements game been used; however, we aimed to provide more details about each one. Other difference is that we included other characterization perspectives. Therefore, even though our work may seems very similar to theirs, we comprehended studies published until April, 2018 providing deeper discussion about them.
+% \important{Acha que convem falar isso abaixo?} 
+% The authors presented a bubble graph crossing information about gamification elements, software area, and research method, which is such interesting; however, we noticed that two elements (e.g. achievements, and teams) presented in the studies they selected were not displayed in the graph. Besides this, one element (e.g. level) was not included as being used in studies that involved software testing, but it did was used. We believe that the grown in gamification field helped us to identify further elements than researchers four years ago.
+
+
+
+% --------- S02: Gamification in SE - A SM ----------
+%% Objetivos (O que fizeram)
+% \citet{S02_Mantyla20216} presented an initial multi-vocal literature review they carried out about gamification of software testing. They used the study \cite{S01_Pedreira2015} to performing forward and backward; after this, they searched for more studies using Google Search Engine. The authors contributed providing quantified results regarding types of testing, systems under test, roles of individuals, used game elements, studies that performed empirical evidence, studies that presented support constructs to gamification, and challenges to gamify software testing.
+%% Similaritades e Diferenca com o nosso
+%The similarity we found with our work is that we also considered types of testing, and used game elements. However, in this paper we provided deeper information; we classified the studies considering three perspectives about software testing (e.g. techniques, levels, and process phases); besides this, we gave deeper details about used game elements; moreover, we discussed and stressed the six perspectives we used to classify them. 
+
+% Transforming work that is supposedly boring and tedious to a game that supposedly is fun and engaging is the key motivator of gamification.
+
+
+% ------- S03: Gamification in software testing --------
+%% Objetivos (O que fizeram)
+%\citet{S03_Fraser2017} discussed about issues software testing has faced, and introduced gamification as a solution to address them. He presented applications of software testing in three domains: education, practice, and crowdsourcing.
+% Different our work and \cite{S01_Pedreira2015, S02_Mantyla20216}' \citeauthor{S03_Fraser2017} did not map, review, or characterized studies found in the literature; not even tried to answer a research question. What he did was raise and present the potential of use of some existing gamified tools based on its application domain. We consider the valuable contribution this study may have; it can, for example, support educators to choose which gamified tool they can use to teach software testing; or help demotivated practitioners to perform testing in a gamified tool increasing, thus, their motivation; or help industry to obtain a solution for a complex problem using crowdsourcing. Now, educators, students, practitioners, companies, have an initial list of gamified options to adopt aiming to reach their goals.
+
+
+% --------------- VENDER NOSSO TUBARAO -------------
+% Qual motivacao pro nosso se ja tem o dele? 
+% \gabriela{Pedreira} foi em 2014 e encontrou 3 estudos de gamification que envolvia teste de software. Nós encontramos 4 (ver se os 4 que encontramos sao um dos 3 que eles encontraram. Se nao, por que nao encontramos? problemas na busca?). From 2014 until February 2018, other eleven primary studies were published (according to our search). 
+ 

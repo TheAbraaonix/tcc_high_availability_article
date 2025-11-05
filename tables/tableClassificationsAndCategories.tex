@@ -1,0 +1,136 @@
+
+\begin{table*}[!ht]
+\setlength{\arrayrulewidth}{2\arrayrulewidth}  % line thickness
+\setlength{\tabcolsep}{2pt}
+\centering
+\caption{Classifications and categories applied to selected studies.}
+\vspace{-.35cm}
+\label{tab:tableClassificationsAndCategories}
+
+\fontencoding{T1}
+\fontfamily{\sfdefault}
+%\fontfamily{\rmdefault}
+\fontseries{m}
+\fontshape{n}
+\fontsize{7.8}{8}
+\selectfont
+
+%\begin{tabular}{p{2.75cm} p{12.8cm}}
+\begin{tabular}{l p{13.2cm}} 
+\toprule %\hline
+
+%\SetRowColor{MyGray}  
+%\multicolumn{4}{c|}{Updated / Extended Studies} & 
+%\multicolumn{4}{c}{Subsumed Studies}
+%\\
+
+\SetRowColor{MyDarkGray}  
+\multicolumn{1}{c}{\textbf{Category}} & 
+\multicolumn{1}{c}{\textbf{Description}}
+\\ \bottomrule %\hline 
+%\\ \hline
+
+
+\SetRowColor{MyGray}\multicolumn{1}{l}{	APPLICATION CONTEXT	} & Contexts in which gamified approaches for software testing may be applied.	\\ \hline
+	Educational	&	Aims to use gamification to teach software testing in either academic or industrial context. \\
+	Industrial	&	Aims to use gamification in software testing in an industrial context for business purpose. \\
+	Any	        &  \\ \hline
+						
+\SetRowColor{MyGray}\multicolumn{1}{l}{	USED GAME ELEMENTS	} & Concrete pieces of games embedded into a gamified environment.	\\ \hline
+	Achievement	    & 	Aims to define objectives to be reached. May be used to stimulate harder work. \\
+	
+	Avatar	        &	Aims to provide a visual representation of characters. May be used to stimulate engagement and motivation. \\
+	
+	Badge	        &   Aims to provide a visual representation of achievements. May be used to stimulate \eg engagement and motivation. \\
+	
+	% Badge	        &   Aims to provide a visual representation of achievements. May be used to stimulate engagement and motivation, provide a sense of progress, and a virtual status. \\
+	
+	Duel	        &   Aims to provide battles. May be used to stimulate competition and engagement. \\
+	
+	Leader Board    &   Aims to provide a public visual display of performance. May be used to enhance competition, stimulate motivation. \\
+	
+	Level	        &   Aims to define steps to reach. May be used to stimulate engagement, competition, and provide a sense of progress. \\
+	
+	Points	        &   Aims to quantify progress. May be used \eg to encourage harder work, and to provide personal feedback. \\
+	
+	% Points	        &   Aims to provide numerical representation of progress. May be used to encourage harder work, provide personal feedback, sense of progress. \\
+	
+	Quest	        &   Aims to define challenges to reach a goal. May be used to drive actions, stimulate engagement.  \\
+	
+	Social Graph    &   Aims to represent a social network into the game. May be used to stimulate collaboration, engagement, motivation.\\
+	
+	Team	        &   Aims to define groups to work together. May be used to encourage collaboration, motivation, competition. \\
+	
+	Virtual good    &   Aims to provide assets with virtual- or real-money value. May be used to stimulate \eg engagement and motivation. \\ \hline
+	
+	% Virtual good    &   Aims to provide assets with virtual- or real-money value. May be used to stimulate engagement, motivation, competition. \\ \hline
+						
+\SetRowColor{MyGray}\multicolumn{1}{l}{	GAMIFICATION GOALS	} & Expected results from the use of gamification.	\\ \hline
+	Increase awareness	        &  Aims to increase the people' awareness  regarding their performance and results. \\
+	
+	Boost adoption	            &  Aims to boost the adoption of software testing.\\
+	
+	Develop creativity	        &  Aims to motivate the development of creativity to perform tasks. \\
+	
+	Ease the fixing process	    &  Aims to motivate people to perform their tasks minimizing the effort in the fixing process.  \\
+	
+	Encourage testing habits    &  Aims to encourage developers to perform testing until it become habit. \\
+	
+	Increase engagement     	&  Aims to engage people in testing activities. \\
+	
+	Improve skills	            &  Aims to stimulate the improvement of student's knowledge, efficiency, performance, among other skills.  \\
+	
+	% Improve skills	            &  Aims to stimulate improvement of student's knowledge, efficiency, performance, tests creation, quality in bugs report, development activities, and tracing results.  \\
+	
+	Increase enjoyment	        &  Aims to increase enjoyment while learning/performing software testing. \\
+	
+	Increase motivation	        &  Aims to increase motivation to learn/perform software testing.\\
+	
+	Enhance monitoring      	&  Aims to enhance the monitoring of all people involved in the development  of complex software artifacts.\\
+	
+	Increase persuasion	        &  Aims to persuade people to have expected behaviours. \\
+	
+	Stimulate collaboration	    &  Aims to stimulate collaboration among people involved in an activity. \\
+	
+	Improve training	        &  Aims to improve training to perform software testing or other activities related to software development.\\ \hline
+						
+\SetRowColor{MyGray}\multicolumn{1}{l}{	TESTING TECHNIQUES	} & Approaches that rely on varying underlying software artifacts to derive the test requirements.	\\ \hline
+
+	Functional Testing	& Relies on software specification documents to derive the test requirements (also known as \emph{black-box} testing).  \\
+	
+	Structural Testing	& Relies on implementation details of the software to derive test requirements (also knows as \emph{white-box} testing). 	\\
+	
+	Fault-based Testing	& Relies on recurring, documented software faults \fabianocr{(\ie fault models and/or taxonomies)} to derive test requirements.	\\
+	
+	Any	                &   \\ \hline
+						
+\SetRowColor{MyGray}\multicolumn{1}{l}{	TESTING PROCESS PHASES	} & Phases included in typical, comprehensive testing process models.	\\ \hline
+
+	Planning	                        &  Comprises the definition of how testing will be performed and what will be tested. \\
+	
+	Data \fabianocr{/ environ.} configuration	& Addresses the prioritization and implementation of test environment requirements established in the test plan.	\\
+	
+	Test cases design	                & Definition of test classes and conditions, thus requiring access to planning and configuration artifacts.	\\
+	
+	Execution and evaluation	        &  Execution of tests and eventual reporting of noticed failures, as well as assuring test goals were achieved. \\
+	
+	Monitoring and control	            &  Aims to organize, consolidate and provide rapid access to information produced during the process execution. \\
+	
+	Maintenance	                        &  Aims to maintain the test suites (specially the automated ones) during the software evolution. \\
+	
+	Any	                                &	\\ \hline
+						
+\SetRowColor{MyGray}\multicolumn{1}{l}{	TESTING LEVELS	} &	Take into account the granularity of the portion of the software which is under testing.  \\ \hline
+
+	Unit Testing	    &  Aims to test each software unit in isolation, with the intent of revealing faults related to the implemented logic. \\
+	
+	Integration Testing	&  Aims to identify problems related to the interface between combined units (\ie integrated units) of a given software. \\
+	
+	System Testing	    &  Aims to assess the software functionalities and performance in general, when executed in its final infrastructure. \\
+	
+	Any	                &  \\
+
+\bottomrule %\hline 
+
+\end{tabular}
+\end{table*}

@@ -1,0 +1,44 @@
+Our systematic mapping study reviewed 706 peer-reviewed publications from 2015 to 2025 that addressed intersections between cloud computing, artificial intelligence (AI), and infrastructure-level concerns. The majority of these works focused on leveraging AI to improve the resilience, fault tolerance, or optimization of cloud systems.
+
+Only a small subset addressed the inverse relationship—strategies for ensuring the availability of AI workloads themselves. After applying our inclusion and exclusion criteria, five studies were identified that explicitly investigated high availability techniques applied to AI systems in cloud environments. These works include approaches such as cross-cloud model replication, failure detection for AI services, and redundancy in large-scale AI pipelines.
+
+These five papers form the core evidence base for our mapping and are analyzed in detail in the following sections.
+
+
+\subsection{Summary of Relevant Studies}
+
+\textbf{1. Intelligent Multi-Cloud Orchestration for AI Workloads} proposes an orchestration framework for AI services across multiple clouds. It applies availability-aware scheduling, leveraging AI workload patterns to improve failover and service continuity~\cite{10828941}.
+
+\textbf{2. Federated Clouds for Efficient Multitasking in Distributed AI Applications} introduces a cloud-edge federated architecture that enhances the fault tolerance of distributed AI tasks. High availability is supported through intelligent resource redistribution in failure scenarios~\cite{9805840}.
+
+\textbf{3. SkyServe: Serving AI Models Across Regions and Clouds with Spot Instances} explores geographically redundant model serving with availability policies that mitigate spot instance volatility. It uses proactive replication and fallback strategies to ensure service continuity~\cite{10.1145/3689031.3717459}.
+
+\textbf{4. Queue Management for SLO-Oriented Large Language Model Serving (QLM)} targets the availability of LLMs by managing request queues and dynamically adjusting resources to meet latency and uptime targets under load~\cite{10.1145/3698038.3698523}.
+
+\textbf{5. FAILS: A Framework for Automated Collection and Analysis of LLM Service Incidents} analyzes real-world failure reports from AI systems to identify common causes of service disruption. While not a mitigation strategy per se, it provides critical insights for designing more available AI services~\cite{10.1145/3680256.3721320}.
+
+\subsection{Alignment with Research Questions}
+
+All five works directly engage with our primary research question and were analyzed along the following dimensions:
+
+\begin{enumerate}
+    \item \textbf{High availability approaches:} The selected studies employ a variety of techniques including multi-region deployment, replication, intelligent failover, and queue stabilization. These approaches explicitly target uninterrupted AI service delivery.
+    
+    \item \textbf{AI domains:} Most focus on Machine Learning and Large Language Models, with some overlap into distributed inference and edge computing scenarios. Generative AI and analytics-focused systems are less explored in availability contexts.
+    
+    \item \textbf{Cloud environments:} Public and hybrid cloud environments dominate the discussion. Edge-enhanced scenarios appear in the federated approach, but private clouds remain underrepresented.
+    
+    \item \textbf{Challenges and limitations:} Common issues include volatility of resources (e.g., spot instances), complexity of orchestrating distributed AI services, and lack of unified frameworks for availability assurance.
+    
+    \item \textbf{Trends and gaps:} Despite growing interest in AI scalability and reliability, few works adopt availability as the central objective. Most strategies are ad hoc or embedded within broader optimization goals, indicating a lack of systematic frameworks for high availability in AI systems.
+\end{enumerate}
+
+\subsection{Research Gap and Relevance}
+
+The limited number of studies directly addressing high availability for AI systems highlights a clear research gap. As AI becomes increasingly embedded in critical applications—ranging from healthcare to finance—ensuring the reliability and continuity of AI services is paramount.
+
+While existing works contribute valuable insights, they are often case-specific, lack generalizable frameworks, and do not address key areas such as Generative AI workloads, availability in private or hybrid cloud settings, or long-term self-healing mechanisms tailored to AI pipelines.
+
+Our study addresses this gap by systematically mapping the existing literature that connects high availability strategies with AI applications in cloud computing. Rather than proposing new architectures or solutions, we categorize the current state of research, highlight underrepresented areas—such as support for Generative AI, private cloud deployments, and AI-specific self-healing strategies—and point to trends and limitations observed over the past decade. This mapping provides a structured overview that can guide future research focused on improving the reliability of AI services in diverse cloud contexts.
+
+

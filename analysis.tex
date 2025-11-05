@@ -1,0 +1,446 @@
+\input{tables/tableResultsClassifications.tex}
+
+
+\begin{comment}
+
+
+\todo{
+
+\begin{itemize}    
+
+    \item Sugestoes de perspectivas para discussao:
+    
+    \begin{itemize}
+    
+        \item Como os trabalhos abordam as fases de um processo de teste?
+        
+        \item Como os trabalhos abordam os niveis de teste (unidade, integracao, sistema)?
+        
+        \item Como os trabalhos se relacionam com tarefas manuais e automatizadas de teste de software?
+        
+        \item etc.
+        
+    \end{itemize}
+    
+\end{itemize}
+}
+
+
+\todo{Aqui podemos ter uma tabela que sumariza toda a classificacao feita, e que sera detalhada nas subsecoes seguintes}
+
+
+\todo{Aqui podemos inserir um grafico de bolhas. Os eixos X e Y podem trazer as duas classificacoes mais aplicadas nos estudos selecionados (e.g. \emph{Used gamification element} e \emph{Gamification goals}... se acharmos interessante, podemos criar um terceiro eixo, e fazer mais de um ``mapa'' desse tipo...}
+
+\important{padronizar o tempo verbal quando fizer a leitura da análise completa}
+
+
+\end{comment}
+
+
+
+
+
+\fabiano{
+
+The following analysis and discussion are based on the perspectives listed in Section~\ref{sec:planning}. 
+%Note that we aligned the perspectives with the six classifications we applied to the selected studies. 
+Table~\ref{tab:resultsClassifications} summarizes the overall classification.
+
+}
+
+%\important{Alterar esse paragrafo para a section Methods onde excplicamos cada classificacao e categorias?} To avoid misunderstanding, we highlight the inclusion of the option "any" to classify the perspectives of application context, software testing techniques, levels, and process phases; this option means that any of the testing techniques (or even all of them) may be used in a proposed gamified approach (consider the same for application context, testing levels and phases). Thus, even though we see in the table  \ref{tab:resultsClassifications} that no study is explicitly classified in the "Functional Testing" option, it does not mean that anyone did not have considered this technique. Actually, it means that all of the studies classified in the "any" option includes functional testing technique  (and all of the others) as candidate to be gamified.
+
+
+% --------------------------------------------------
+
+\vspace{-.2cm}
+
+\subsection{Classification: \emph{Application context}} \label{sec:applicationContext}
+    
+We considered two contexts \fabiano{in which} gamification was applied in the selected studies: 
+    %(i)
+\concept{educational} (both \fabiano{academic and industrial)}, and
+    %(ii) 
+\fabiano{only} \concept{industrial}.
+    %Overall, we identified in the studies which contexts the authors proposed and/or applied their approaches. 
+%\fabiano{The summary is shown in Table~\ref{tab:resultsClassifications}.}
+\fabiano{The} \concept{educational} context was considered in \fabiano{10} studies: \cite{P02_Rojas2016, P03_Rojas2017, P12_Rojas2016, P13_Clegg2017, P04_Anderson2015, P05_YujianFu2016, P06_DalSasso2017, P10_Sheth2012, P11_Bell2011, P15_Dubois}.
+\fabiano{The} \concept{industrial} context was considered in \fabiano{8} studies: \cite{P01_Garcia2017, P02_Rojas2016, P03_Rojas2017, P06_DalSasso2017, P07_Parizi2016, P08_Liechti2017, P09_Laurent2017, 6363241}. 
+    %As one can notice, some studies considered both educational and industrial contexts.
+\fabiano{With a few exceptions, all approaches can be applied to both \concept{educational} and \concept{industrial} contexts. 
+    %\important{Checar se hah como justificar melhor as razoes para essas ``excecoes'' w.r.t.  \citet{P01_Garcia2017}, \citet{P04_Anderson2015} e \citet{P05_YujianFu2016}... ver nota do Reviewer 3.}
+The exceptions are 
+the approach of \citet{P01_Garcia2017} which, as we understand, cannot be applied for educational purposes \fabianocr{due to the fact that their framework was created to assist designers to gamify a workplace, not to teach software testing.};
+and the approaches proposed by \citet{P04_Anderson2015} and  \citet{P05_YujianFu2016}, which are meant for education \fabianocr{because their systems are applicable to teach software testing, not to other industrial purposes such as to improve the employees' performance or to engage them to test their code improving the product's quality}}.
+    
+Despite the fact that some authors have mentioned a specific context to apply their proposals (academic education, for example), most of \fabiano{them} can also be used in other \fabiano{contexts} (industrial education, or even in industry for commercial purposes). 
+For example, \citet{6363241} \fabiano{affirm} that their proposal is not intended to classroom use, but we see a real possibility to use it to teach software testing. 
+The authors proposed an approach to gamify \fabiano{the} software development process, highlighting that they gamified the developers' everyday activities in their real world. \citeauthor{6363241} defined achievements that the developer (or the teams) needed to reach aiming to earn medals. If someone reached an impressive code coverage in his automated testing, an extra reward was given. Converting this to an educational context, we can consider to encourage students to learn software testing \fabiano{by} gamifying the classroom. We can create quests they should solve, and define how many times they need to reach at least 80\% of code coverage to earn a medal. %That is, \fabiano{Even though} this proposal is not intended to classroom, it does not mean it cannot be.
+    
+    
+    
+    %\important{Eu reorganizei o trecho acima... veja se ficou consistente com a versao anterior (comentada no latex)}
+    % After we have read and analyzed the selected studies, we identified that only the gamification approach proposed \fabiano{by} \citet{P01_Garcia2017} is not applicable to the \fabiano{educational} context. On the other hand, all of the approaches can be applied to both educational and industrial contexts, except \fabiano{the ones proposed by \citet{P04_Anderson2015} and by \citet{P05_YujianFu2016}, which} are exclusively for education.
+    
+
+\begin{comment}
+    
+    \important{Seria interessante retomar algumas caracteristicas do estudo de \citet{6363241} para justificar a razao de considerarmos esse trabalho aplicavel em ambos os contextos (i.e. academico e industrial)... Ou seja, iriamos fornecer um exemplo concreto pra embasar a discussao... Isso pode ser feito para todas as 6 analises apresentadas aqui nesta secao~\ref{sec:analysis}... 
+    
+    Por exemplo, quando estiver falando de ``testing techniques'', pegar um trabalho que aborda uma tecnica especifica (e.g. functional testing) e dar alguns detalhes sobre esse ponto em particular, ou seja, como o trabalho aborda o functional testing... 
+    
+    Como outro exemplo, agora na analise sobre fases do processo de teste, pegar um trabalho que aborda Monitoramento e Controle e dar alguns detalhes como o trabalho aborda essa fase do processo de teste... }
+    
+
+\end{comment}    
+    
+    
+% --------------------------------------------------
+
+\vspace{-.2cm}
+
+\subsection{Classification: \emph{Used gamification elements}} \label{sec:gameElements}
+
+
+    %\fabiano{Initially, as introduced in Section~\ref{sec:background}, we reinforce that we are} using \emph{game element} as synonym of \emph{game component}, \fabiano{despite the fact that} we \fabiano{are aware} that component is \fabiano{one (out of three) classes of} elements in games \fabiano{(namely, components, dynamics and mechanics).}
+    
+    \concept{Points}, \concept{leader board}, and \concept{levels} were the most \fabiano{commonly used} elements. 
+    Only \citet{P15_Dubois} did not use \concept{points}. 
+    Both \concept{levels} and \concept{leader board} were each used in 10 studies. 
+    \concept{Badges}, which composes the PBL triad (\concept{Points}, \concept{Badges}, \concept{Leader board}), \fabiano{were} mentioned in 6 studies. \citet{werbach2012win} discuss about the PBL triad and \fabiano{affirm} that it has its benefits, but \fabiano{highlight} that they are superficial game elements. 
+    \fabiano{The authors also suggest} that PBL can be used as an initial extrinsic motivator, as done by \citet{P08_Liechti2017}, but they \fabiano{advise} that it is \fabiano{necessary} to go further in the other game elements to achieve the maximum gamification \fabiano{may} offer.
+    %\important{[fabiano] eu movi este paragrafo para ca, pois esta focando em exemplos de elementos de gamificacao usados}
+    As another example, to reach the gamification goals intended in CODE DEFENDERS, \citet{P02_Rojas2016} incorporated elements into the game (\eg \concept{points}, \concept{levels}, \concept{duel}). 
+    %CODE DEFENDERS is a game to teach mutation \fabiano{testing}; players can act as attackers (to create mutants), or defenders (to create unit tests to \fabiano{increase mutant coverage, that is, to} kill the mutants). 
+    \fabianocr{In CODE DEFENDERS,} \concept{Points} are given to a defender based on how many mutants he/she killed; they are given to a attacker based on how many mutants survived. \concept{Levels} are placed into the game to give to the players two options of difficulty (easy, hard). \concept{Duels} occur when a defender labels a mutant as equivalent; so, the attacker has to prove that it is not equivalent by creating a test case that kills the mutant, or has to agree.  
+    
+    The only study that did not define concrete game elements was the presented by \citet{P15_Dubois}. 
+    They gave an example of how to use gamification in an educational context. However, \fabiano{the authors only mentioned} rewarding game mechanism, \fabiano{though} not defining which concrete elements could be used to reward a student.
+    
+   
+   \begin{comment}
+   
+   \important{deixar esses 2 paragrafos aqui ou colocar em further discussion?}
+    \important{Depois vemos se encaixa em Further Discussion... aqui estah fora de contexto, pois a secao eh dedicada a discutir game elements (e nao conceito de gamificacao e serious games)}
+    \citet{P12_Rojas2016} presented CODE DEFENDERS, a game to teach mutation testing. We highlight this study to discuss about some points. First, the authors present their approach as a game and treat it as gamification (\fabiano{see the} definitions for gamification and serious games given in Section~\ref{sec:background}). 
+    It was kind confusing at the beginning because the definitions did not match; until they did. 
+    Remember, gamification is the use of game elements in non-game contexts; serious games are full-blown games which purposes are other than exclusively entertainment and fun. Going further, how do we gamify? by adding elements in non-game contexts. What does a game context is? it is intended exclusively for entertainment and fun, 100\%. But, we just saw that serious games are not exclusively intended for entertainment and fun. Thus, CODE DEFENDERS may be classified as a serious game, a specific type of gamification (which we will explain later). That is why \cite{P12_Rojas2016} consider the CODE DEFENDERS game as a gamification approach to teach mutation testing. 
+    
+    A second point we want to mention about \cite{P12_Rojas2016} is the possibility of using the game as an evaluation framework. The authors affirm that the student's performance can be tracked serving as feedback to educators (how many points a student earned?). We make a link between this example with \citeauthor{werbach2012win}, who exemplified one of the six ways \concept{points} can be used; they list that \concept{points} provide feedback, which is one of the four aspects of game.
+    
+    
+   \end{comment} 
+   
+    % O trabalho que não deu muito foco pra gamificacao usando somente para motivacao inicial pode ter sido uma vantagem pq extrinsic reward crowd out intrinsic ones, como disser werbach. Mas ext motiv nao e sempre negativo. Para tarefas dull, repetitive, tedious, pode ter bons resultados em motivacao. Quando usar? principalmente em tarefas que sabemos que nunca ou dificilmente serao prazerosas por si so.
+    
+    % Todos os trabalhos usaram extrinsic motivators como points. Todos os trabalhos que fizeram experimentos mostraram resultados positivos, mesmo que tiveram biases. Isso nos da um hint de que software testing e um candidato a ser gamificado com uso de extrinsic motivators (se uso extrinsic em situacoes que tarefas nunca serao intrinsic por si so, concluo que teste - por ter mostrado resultado positivo em todos os trabalhos usando extrinsic - nao e intrinsic por si so?)
+    
+    %O objetivo de gamificar não é entreter os alunos para faze-los to escape from the learning to a not real world (a game). Actually, it is to engage, motivate them throughout the learning process (the real word objective).  Motivate students to do something I hope they do.
+
+   % P12 o jogo pode servir de feedback para o educator provendo feedback sobre o progresso dos alunos (werbach listou 6 ways que pontos podem ser utilizados, e essa e uma delas - provides data to analyze metrics such as how fast or how slow a student is going through the content
+    
+    
+
+    
+    
+
+% --------------------------------------------------
+\vspace{-.2cm}
+
+\subsection{Classification: \emph{Gamification goals}} \label{sec:gamificationGoals}
+
+    A variety of gamification goals \fabiano{was} identified in the studies. \fabiano{Examples are \concept{boost adoption}, \concept{stimulate collaboration}, and \concept{develop creativity}. The full list and work distribution can be seen in Table~\ref{tab:resultsClassifications}.}
+    %, ease the fixing process, encourage testing habits, increase engagement, increase motivation, increase enjoyment, increase persuasion, enhance monitoring, improve training, and improve skills. 
+    \fabiano{Notice that we} unified different kinds of improvements, \fabiano{namely:} efficiency, performance, creation of stronger tests, quality of bug reports, quality of tracing results, software engineering education, learning outcomes, and testing skills. 
+    
+    %\important{acha melhor colocar entre parenteses: quantidade de estudos, OU os estudos? Por exemplo, no primeiro goal: increase of engagement (eleven studies), OU ([1, 3, 5, ..., 21]?}
+    The top pursued goals were 
+    \concept{increase engagement} \cite{P01_Garcia2017, P02_Rojas2016, P03_Rojas2017, P04_Anderson2015, P05_YujianFu2016, P07_Parizi2016, P09_Laurent2017, P10_Sheth2012, P11_Bell2011, P12_Rojas2016, P13_Clegg2017, 6363241, P15_Dubois}, 
+    \concept{improve skills} \cite{P01_Garcia2017, P02_Rojas2016, P03_Rojas2017, P05_YujianFu2016, P06_DalSasso2017, P07_Parizi2016, P10_Sheth2012, P11_Bell2011, P12_Rojas2016, P13_Clegg2017, P15_Dubois}, 
+    \concept{increase motivation} \cite{P03_Rojas2017, P04_Anderson2015, P05_YujianFu2016, P06_DalSasso2017, P07_Parizi2016, P08_Liechti2017,  P10_Sheth2012, P12_Rojas2016, P15_Dubois}, 
+    and 
+    \concept{increase enjoyment} \cite{P02_Rojas2016, P03_Rojas2017, P04_Anderson2015, P08_Liechti2017,  P10_Sheth2012, P11_Bell2011, P12_Rojas2016, P13_Clegg2017}. 
+    Other goals were \fabiano{pursued by less than four studies}. %, two, or 1 study (stimulation of collaboration, encouragement of testing habits, all of the other goals, respectively. 
+    
+    
+    %It is important to note that educational/business objectives, and gamification goals might not \fabiano{be} the same. 
+    %For example, the CODE DEFENDERS game (\cite{P02_Rojas2016, P03_Rojas2017, P12_Rojas2016, P13_Clegg2017} has the educational objective of teaching mutation testing. On the other hand, its gamification goals are, mainly, to increase enjoyment throughout the learning process, \fabiano{to} increase students' engagement and motivation, and \fabiano{to} improve students' skills such as their knowledge, performance in testing activities, and creation of stronger tests and mutants.
+    
+    
+  
+
+
+% --------------------------------------------------
+\vspace{-.2cm}
+
+\subsection{Classification: \emph{Software testing techniques}} \label{sec:testingTechniques}
+
+    The selected studies were classified into the \fabiano{following} three techniques: 
+    \fabiano{\concept{functional testing}, \concept{structural testing}, and \concept{fault-based testing}.}
+    Besides this, we included the option \concept{any}, as aforementioned. % in the classification; this option means that any of the three testing techniques (or even all of them) may be used in a proposed gamified approach.
+    %Moreover, \fabiano{notice} that, in this paper, we classified mutation testing as a fault-based testing technique, even though we \fabiano{aware} that it is actually a \fabiano{criterion associated with the fault-based technique.}
+    
+    
+    \fabiano{Specifically,} \concept{fault-based testing} was the  most gamified technique.
+    Apart from it, 
+    \fabiano{in total, 9 out of 15 studies} proposed gamified approaches that, in our understanding, are applicable to any of the \fabiano{three techniques.}
+    For example, 
+    %it is possible to use WReSTT-CyLE system\fabiano{~\cite{P05_YujianFu2016}} to teach functional testing, as it is also possible to use the same tool to teach \fabiano{structural and fault-based testing.}.
+    \citet{P05_YujianFu2016} mentioned that \fabiano{the WReSTT-CyLE tool} contains tutorials and content to teach \concept{functional testing} and \concept{structural testing}; however, we classified their study considering that the system can be used to teach any testing technique, since other contents are possible to be added in the system. At the same way, \concept{functional testing} and \concept{structural testing} were cited by \citet{P08_Liechti2017}, but we also classified that any testing technique can be used in their approach.
+    
+    
+    Regarding the \fabiano{9} studies classified as applicable to any technique, 
+    %\citet{P05_YujianFu2016, P10_Sheth2012, P11_Bell2011}, 
+    \citet{P05_YujianFu2016}, \citet{P10_Sheth2012}, and \citet{P11_Bell2011}
+    proposed gamified systems to support software testing teaching/learning.
+    \fabiano{The} proposal of \citet{P04_Anderson2015} did not focus on teaching software testing concepts, but \fabiano{involved} them in the lessons. 
+    \citet{P01_Garcia2017}, \citet{P06_DalSasso2017}, \citet{6363241}, and \citet{P15_Dubois} proposed approaches to gamify any software engineering activity. 
+    We considered that those proposals may be applied to any of the software testing techniques for its generic and/or flexible characteristics.
+    
+    %\important{Omiti um paragrafo aqui para encurtar um pouco o texto... falava sobre os estudos classificados em uma unica tecnica}
+    %Of the other six studies, \citet{P07_Parizi2016} used gamification considering only structural testing technique, and \citet{P02_Rojas2016, P03_Rojas2017, P12_Rojas2016, P13_Clegg2017, P09_Laurent2017} considered only mutation testing technique. Note that \cite{P02_Rojas2016, P03_Rojas2017, P12_Rojas2016, P13_Clegg2017} are related to the CODE DEFENDERS game, while \cite{P09_Laurent2017} is another platform similar to the game.  
+    
+    
+    
+    %\important{pular esse exemplo também? Na subsection acima falamos do CODE DEFENDERS incluindo o teste mutant, como era realizado, e no primeiro paragrafo cito que a ferramenta ensina tecncas funcionais e estruturais com tutoriais e outros conteudos presentes nela}
+    
+
+
+
+% --------------------------------------------------
+\vspace{-.3cm}
+
+\subsection{Classification: \emph{Testing levels}} \label{sec:testingLevels}
+
+
+    We \fabiano{classified studies according the following levels:
+    \concept{unit testing}, 
+    \concept{integration testing}, 
+    and \concept{system testing}}. 
+    Option \concept{any} was \fabiano{applied to studies that (potentially) address} gamification in any testing level.
+    
+    Authors that explicitly mentioned a testing level were: \citet{P01_Garcia2017, P02_Rojas2016, P03_Rojas2017, P04_Anderson2015, P07_Parizi2016, P08_Liechti2017, P09_Laurent2017, P12_Rojas2016} and \citet{P13_Clegg2017}. \fabiano{All these authors} mentioned the \concept{unit testing} level.
+    %, except \citet{P08_Liechti2017}, who included integration and system levels. 
+    \fabiano{\citet{P08_Liechti2017} were the only authors that also explicitly took into account the other two levels (namely, \concept{integration testing} and \concept{system testing}.}
+    
+    
+    \citet{P05_YujianFu2016, P06_DalSasso2017, P10_Sheth2012, P11_Bell2011} and \citet{P15_Dubois} did not \fabiano{specify} a testing level in their studies. However, considering our reading and understanding of \fabiano{their studies}, we classified them as applicable to any testing level. 
+    The studies \fabiano{of} \citet{P01_Garcia2017, P04_Anderson2015} and \citet{P08_Liechti2017}, which address \concept{unit testing}, are also proposals applicable to any other level. % (integration and/or system testing).
+    %    Therefore, unit testing was the most specific testing level identified in the studies.   
+    
+
+    
+    %\important{adicionar exemplo}
+    %\important{Vamos pular esse exemplo para economizar espaco...}
+    
+    
+% --------------------------------------------------
+
+
+\subsection{Classification: \emph{Phases in the testing process}} \label{sec:processPhase}
+
+    %The testing process phases we considered in the classification were: 
+    %\concept{planning};
+    %\concept{data and environment configuration}; 
+    %\concept{test cases design};
+    %\concept{execution and evaluation};
+    %\concept{monitoring and control}; and
+    %\concept{maintenance}; and 
+    %\concept{any} \fabiano{(when applicable to any phase)}.
+    At first, notice that \concept{maintenance} was not considered as an option in our list of testing process phases. 
+    We added it when we observed that a study~\cite{P07_Parizi2016} clearly defined the phases that the proposed approach would comprehend (\concept{test cases design}, and \concept{maintenance}).
+    Moreover, \fabiano{\citet{P08_Liechti2017}  mentioned} that the \concept{maintenance} of an automated test suite was a reason to use the Fogg Behaviour Model. 
+    %\fabiano{Therefore,} we understand it is also a testing phase included at the gamification. 
+    %To the other studies, the classification was done based on our reading and understanding of in which phases we could classify each of those. 
+    
+    \fabiano{Regarding the obtained classification, it} is important to note that, \fabiano{even though some studies have the same classification across the process phases \cite{P02_Rojas2016, P03_Rojas2017, P12_Rojas2016, P13_Clegg2017, P08_Liechti2017},} 
+    we could not classify them as applicable to any. 
+    It is due to the fact that \fabiano{they are not applicable to the \concept{planning} and \concept{data and environment configuration} phases}.
+    
+    %\important{Omiti um paragrafo aqui... concordo com a justificativa, mas podemos ganhar espaco evitando detalhar as decisoes estudo-por-estudo}
+    %We did not include \cite{P09_Laurent2017} in monitoring and control, and in maintenance phases because we did not identify enough information to conclude that; so, we decided to classify this study only in the phases that were clear to us (i.g. test case design, and execution and evaluation).
+     
+    The studies \fabiano{of} \citet{P01_Garcia2017}, \citet{P04_Anderson2015}, \citet{P05_YujianFu2016}, \citet{P06_DalSasso2017}, \citet{P10_Sheth2012}, \citet{P11_Bell2011}, \citet{6363241}, and \citet{P15_Dubois} were classified as applicable to \concept{any} testing process phase following the same rationale for testing technique: they are either generic or flexible approaches.
+    
+    
+    %\important{Esta eh uma frase interessante para levar para as conclusoes...}
+    %We highlight that \fabiano{all studies} comprehend more than one testing process phase, as we naturally expected.
+
+    %\important{adicionado exemplo}
+    \fabiano{\citet{P07_Parizi2016}'s work is an example of a study that we classified with multiple testing phases. The author} presented a new approach to create trace links between test and code artifacts. 
+    As aforementioned, \fabiano{it addresses the following phases:} \concept{test case design}; and \concept{maintenance}. 
+    The trace links are embedded into the test code in the moment the test developers are designing the tests. 
+    In \fabiano{the} \concept{maintenance} phase, the traceability information can be extracted and an automatic Link Retriever \fabiano{tool} specifies the validity of the trace links' status. 
+    With his proposal, the effort to verify the links would be \fabiano{reduced}, and only invalid status would need to be analyzed and fixed. 
+
+
+% --------------------------------------------------
+
+
+\subsection{Further Discussion}
+
+
+%{\LARGE \important{A SER REVISADO...}}
+
+
+\begin{figure*}[!ht]
+     \centering
+     \includegraphics[width=.825\textwidth]{figures/GraficoBolhas_Fabiano.pdf}
+     \vspace{-.6cm}
+     \caption{Number of studies that relate gamification elements to gamification goals.}
+     \label{fig:bolhas}
+\end{figure*}
+
+
+
+
+\begin{comment}
+
+\todo{Aqui podemos discutir outras carateristicas (e.g. os trabalhos que abordam automatizacaoo de testes) observadas nos estudos selecionados, mas que nao foram discutidas nas subsecoes anteriores...
+
+
+um exemplo e a questao da automatizacao... poucos estudos abordam esse ponto, mas eh importante falar disso, pois o SAST eh um evento que tem foco em automatizacao de teste...
+
+outros pontos podem ser discutidos aqui, quando julgar pertinente}
+
+
+\end{comment}
+
+
+% -------- DISCUTIR SOBRE TESTE AUTOMATIZADO --------
+
+Several gamified approaches proposed in the studies  mentioned automated software testing activities, most of those in unit testing level. \fabiano{For example, }
+\citet{P03_Rojas2017} used three automated tools with CODE DEFENDERS: EvoSuite, Randoop, and Major. The first two automatically generates unit tests for Java classes in JUnit format. Major, \fabiano{on the other hand, is a mutation testing tool}. 
+These tools were used to support the single-player mode of the game, and to compare the created tests and mutants.
+%, with the created by automated tools. The results revealed that the gamified approach helped to create stronger tests and mutants than the ones created automatically. 
+
+
+\citet{P07_Parizi2016} listed some approaches of \fabiano{automatic} traceability. \fabiano{He also} discussed that empirical experiments revealed some poor results in precision and recall, \fabiano{despite their high applicability}. 
+Another important observation he made was that results from automated techniques (specially if applied in critical systems) should have human inspection. The gamified approach proposed \fabiano{by the author} revealed better results in accuracy than a non gamified system.
+
+
+\citet{P08_Liechti2017} \fabiano{stated} that automated testing increases the software quality significantly. In their work, they presented a concept of test analytics, which is composed by \fabiano{key} practices in agile methodologies:
+continuous self-improvement, 
+feedback mechanisms, 
+and automated testing. 
+The authors used the Fogg Behaviour Model to drive employees' \fabiano{behavior}, aiming to make them rigorous \fabiano{while maintaining} automated test suites. 
+Gamification was used to add fun to the process, thus motivating the employees to write tests. 
+%The authors presented cases in which developers who were not used to testing habit became addicted in it. Others moved to another company and got frustrated for not being allowed to perform software testing as before.
+
+\citet{6363241} proposed gamification to engage developers in their daily activities. 
+Despite the use of varied game elements for motivation purposes, \concept{achievements} was on focus of the study. 
+They created an \concept{achievement} to reward teams by excellence in automated testing; code coverage was used as a measure. That is, they stressed the importance of performing automated testing \fabiano{appropriately}.
+
+%Considering these and other results shown by the authors, we believe that gamification can both motivate people improving their testing skills, and driving them to became active practitioners.
+
+ 
+%\important{tinha pensado em discutir sobre trabalhos que nao tinha foco em teste, mas no texto ja justifiquei por quais motivos os consideramos. Acha ainda pertinente falar mais a respeito? Estou pensando no espaco}
+%\important{[Fabiano] Acho que jah temos discussao suficiente}
+% -------- DISCUTIR SOBRE TRABALHOS QUE NÃO TÊM FOCO APENAS EM TESTE, MAS ENVOLVE DE ALGUMA MANEIRA --------
+
+\begin{comment} 
+--- TRABALHOS QUE NÃO TÊM FOCO APENAS EM TESTE DE SOFTWARE ---
+
+\cite{P01_Garcia2017} GOAL gamifica qualquer phase do processo de desenvolvimento. Composto de ontologia, metodologia, e arquitetura. A gamificação é feita seguindo a metodologia que analisa o perfil dos usuários para definir quais elementos são mais indicados para serem usados.
+
+
+Even though some studies did not focus on software testing, we have considered them because this was included somehow. For example, the studies that proposed to gamify any software development phase, or any software engineering activity, lead us to include software testing as applicable to be gamified.
+\end{comment}
+
+
+
+
+% --------------------------------------------------
+
+
+\subsection{Revisiting our Research Question}
+
+
+%{\LARGE \important{A SER REVISADO...}}
+
+% \todo{Aqui podemos elaborar um paragrafo que responde a nossa questao de pesquisa (How has gamification been applied to support software testing activities?). Seria como uma conclusao geral, que pode ser retomada na ultima secao do artigo.}
+
+
+We analyzed the selected studies \fabiano{and classified} them according to six perspectives. 
+The classification based on the \concept{application context} revealed that almost all proposals comprehend both educational and industrial contexts, intentionally or not.
+\fabiano{Besides that, }
+the most \concept{used game elements} were points, levels, and leader boards, \fabiano{whereas} 
+the main \concept{gamification goals} in software testing activities were increasing engagement, improving skills, and increasing motivation.
+\fabiano{
+%\important{aqui vai uma leitura do grafico de bolhas...}
+The bubble chart of Figure~\ref{fig:bolhas}  shows combined results based on the last two aforementioned classifications: \concept{used game elements} and \concept{gamification goals}.
+In the chart, considering the vertical reading, the data labels (and the sizes of the bubbles) represent the numbers of times a given game element was addressed in a study that pursued a given goal. For instance, \concept{points} were used in 12 studies that investigated gamification to \concept{increase motivation}.
+}
+
+
+\citet{werbach2012win} argue that ``gamification is about engagement''. 
+Our results corroborate it. 
+Those authors also observe that the PBL triad (points, badges, leader board) are the most basic game elements. 
+Once again, our results corroborates it\footnote{Noticeably,  \concept{level} is another very basic game element that stood out in Figure~\ref{fig:bolhas}.}.
+%\important{[Fabiano] Criei a seguinte frase conclusiva  sobre o nosso estudo... veja se concorda, e ajuste como achar melhor}
+Taking into account the other classifications we applied to the selected studies, we draw the following answer to our research question:
+
+
+
+\begin{shaded}
+\noindent
+Gamification has been investigated to support software testing mostly with the application of \emph{basic game elements (such as points, levels and leader boards)}, and with the aim of \emph{increasing engagement and motivation, and improving skills}, without any clear focus on particular testing technique, level or process phase.
+\end{shaded}
+
+
+
+
+
+
+
+\begin{comment}
+, the most sought-after gamification goal. As we discussed, there are goals defined to use gamification in a context. Besides this, gamify comprehend using the toolkit to define which game elements to incorporate. Some studies mentioned benefits or effects some game elements could bring. However, none discussed which ones are to achieve specific goals. 
+
+
+%: application context, used gamification elements, gamification goals, software testing techniques, testing levels, and phases in the testing process. So, How has gamification been applied to software testing?
+    
+    %After the analysis, we want to understand how gamification has been applied to support software testing activities.
+    
+
+
+    
+
+% -------- APPLICATION AREA --------
+
+
+    % pensar em onde colocar esse paragrafo... ou retirar. \citet{P11_Bell2011} caught our attention with the approach they proposed. The authors presented the system HALO whose objective is to motivate students to test their code. However, it was not supposed to the students be aware that they were exposed to learn software testing concepts while performing other major activity (i.g. programming). Thus, a new concept (testing) was presented avoiding rejections. 
+
+
+% -------- GAME ELEMENTS AND GAMIFICATION GOALS --------
+
+    
+    \citet{werbach2012win} affirms: "gamification is about engagement.", the most sought-after gamification goal. As we discussed, there are goals defined to use gamification in a context. Besides this, gamify comprehend using the toolkit to define which game elements to incorporate. Some studies mentioned benefits or effects some game elements could bring. However, none discussed which ones are to achieve specific goals. 
+    
+
+
+
+% ------ TESTING TECHNIQUES, LEVELS, PROCESS PHASES ------
+
+    Activities of fault-based testing (using mutation testing criteria) and unit testing were the software testing technique and level (respectively) most supported by gamification. Considering the testing process, no study comprehended gamification in the test planning phase, nor data and environment configuration. We highlight that, even though the subject is gamification in software testing activities, only few studies clearly defined which testing techniques, levels, and process phases were considered to have its activities gamified; moreover, few details were given to explain how the testers would perform testing activities, and how they would be supported by gamification. Thus, the classification of these three perspectives (testing techniques, levels, and process phases) was most done based on our reading and understanding of each selected study.
+
+
+% -------- BENEFITS, OUTCOMES, PERILS --> VER PÁGINA 39 do P19 --------
+   
+    % -------- Benefits of gamification: ver tabela de gamification goals --------
+    
+
+
+
+    % -------- Perils --------
+    \citet{P06_DalSasso2017} reflects that creating a gamified environment is not a trivial endeavour; it involves thinking steps that, if ignored, can lead to the "pointsification" and stalling, which are some of the perils of gamification. "Pointsification" is a demotivating attitude; it happens when the user's focus change from the mainly goal (e.g. learning software testing) to simply perform the tasks aiming to earn the points. Besides that, gaming the system might be another unexpected behaviour caused by inappropriate game elements usage. 
+    An example that might cause stalling is a not balanced reward system. Rewarding users too fast or too late, and do not be fair with novices and experienced users might also lead to demotivation insteaf of motivation. A risk in this case is the user stopping to use the system. So, as done in \cite{P06_DalSasso2017}, it is important to think what elements are appropriated to be used, how, and when.   
+
+    \citet{P07_Parizi2016} affirm that the most challenge part of gamification is to define the game elements appropriate to be used.
+
+    % \citet{6363241} fala dos desafios de fazer o design e do burnout, similar ao P06. Burnout: a habilidade para fazer algo já é master ao ponto de tornar a tarefa annoying. (enquanto para um novato programar a ordenação de um array pode ser divertido por si só, para um programador experiente passa a ser entediante). Solução para evitar o burnout: storytelling para distrair e manter o jogador immersed e interested no jogo
+    
+    % \citet{P15_Dubois, P07...} fala sobre cheating prevition
+
+
+\end{comment}
+

@@ -1,0 +1,146 @@
+
+\documentclass[10pt, twocolumn]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{array}
+\usepackage{color}
+\usepackage{pdflscape}
+\usepackage{placeins}
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{paralist}
+\usepackage[numbers]{natbib}
+\usepackage{titlesec}
+
+% Section (like: 1. Introduction)
+\titleformat{\section}
+  {\normalfont\fontsize{9}{11}\bfseries\scshape}{\thesection}{1em}{}
+
+% Subsection (like: 1.1 Background)
+\titleformat{\subsection}
+  {\normalfont\fontsize{9}{11}\bfseries\scshape}{\thesubsection}{1em}{}
+
+% Subsubsection (like: 1.1.1 Detail)
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{9}{11}\itshape}{\thesubsubsection}{1em}{}
+
+% Body text (if not already 9pt)
+\renewcommand{\normalsize}{\fontsize{9}{11}\selectfont}
+\normalsize
+
+
+\usepackage{fancyhdr}
+\usepackage{authblk}
+
+\pagestyle{plain}
+
+% Prevent paragraph indentation
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Section spacing to mimic ACM sigconf
+\titlespacing*{\section}{0pt}{1.5ex plus .2ex minus .2ex}{1ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1ex plus .2ex minus .2ex}{0.5ex plus .2ex}
+
+
+
+\usepackage{moreverb}
+\usepackage{paralist}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{array}
+\usepackage{multirow}
+%\usepackage{hyperref}
+\usepackage{booktabs} % style for plain tables
+\usepackage{colortbl}
+
+\usepackage{color}
+\usepackage{pdflscape}
+\usepackage{placeins}   % for FloatBarrier command
+\usepackage{comment}
+\usepackage{framed}
+
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{cuted}
+
+
+\linespread{1}
+
+\begin{document}
+
+\font\myfont=cmr12 at 18pt
+
+\title{{\myfont High Availability Systems for Artificial Intelligence Applications in Cloud Computing: A Systematic Mapping Study}}
+
+
+\author{
+\begin{tabular}[t]{c@{\extracolsep{8em}}c} 
+I. M. Author  & M. Y. Coauthor \\
+My Department & Coauthor Department \\ 
+My Institute & Coauthor Institute \\
+email, address & email, address
+\end{tabular}
+}
+
+\date{}  % No date shown
+
+\maketitle
+
+
+{
+\section*{ABSTRACT}\label{sec:abstract}
+\small
+\input{abstract}
+}
+
+{
+\section{INTRODUCTION} \label{sec:introduction}
+\small
+\input{introduction}
+}
+
+
+\section{BACKGROUND} \label{sec:background}
+\input{background}
+
+\section{METHOD AND DATABASE} \label{sec:planning}
+\input{studySetup}
+
+\section{Overview of Selected Studies}
+\label{sec:results}
+\input{results}
+
+%\section{Analysis and Discussion} \label{sec:analysis}
+%\input{analysis}
+
+%\section{Limitations and Related Work} \label{sec:limitation}
+%\input{limitation}
+
+\section{FINAL REMARKS} \label{sec:conclusion}
+\input{conclusion}
+
+
+% \important{Agradecimentos podem vir somente em uma eventual versao final...}
+
+\section*{ACKNOWLEDGMENTS}
+
+\begin{sloppypar}
+The authors thank the support given by our Professor, Gabriela Martins de Jesus.
+\end{sloppypar}
+
+
+\vspace{-.1cm}
+{\footnotesize 
+\setlength{\bibsep}{0pt}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references} 
+}
+
+\end{document}

@@ -1,0 +1,87 @@
+\begin{comment}
+
+\todo{
+\begin{itemize}
+    \item Introductory paragraph...
+    \item Definition for gamification (note that the definition of software testing concepts must be in the introduction... SAST is a software testing event, so just brief introduction of concept is enough... no need to put it here, in background section)
+    \item Main concepts of gamification
+        \item Games, Serious Games, Gamification
+        \item Game Elements: Dynamics, Mechanics, Elements
+    \item Gamification in software development (overview)
+    \item Gamification in software testing (overview)
+\end{itemize}
+}
+
+
+
+%\important{Esse exemplo estah muito legal... voce criou, ou extraiu de algum lugar? Se for o 2o caso, inserir a referencia.}
+Consider you have a system where your employees must log their work activities \fabiano{following a prespecified set of} rules\footnote{This scenario was adapted from the work of \citet{werbach2012win}}. Every single day. Besides this, imagine that your Human Resources Department faces huge challenges because \fabiano{the employees} do not do that, at least not every day, or not as expected to. 
+So, you decided \fabiano{to} embed into you system a list of features aiming to motivate the employees to do what you want they do. You used a point system to reward them when they log their activities every day, and give extra points when they do it correctly. If they log for five consecutive days, so they earn a badge, which is visible in their profile for anyone to see; if they do it again for 3 times, they earn another badge, and so on. Besides this, a leader board is placed visible in your company ranking the employees by their earned points. The first three leading the ranking for more time, in rounds of two months, are recognized and earn real prizes. Well, what you did in this example was gamifying your system. You added game elements (points, badge, leader board) in a context that is not a game. 
+
+%We thought in summarize the definitions we would find in the selected studies, but we noticed that almost all of the authors used the one given by \gabriela{Deterding}'s: "gamification is the use of game elements in non-game contexts."
+
+     
+% games have four key aspects: voluntary participation, feedbacks, rules, goals. 
+
+%\important{[Fabiano] Comentei um paragraph inteiro aqui... acho que isso nao compromete o entendimento dos conceitos}
+\begin{comment}
+But, what is a game? Or what are game elements? What does ``non-game context'' mean? \fabiano{These concepts are briefly explained next.}
+\fabiano{Initially, let us consider the concepts of} \concept{games}, \concept{serious games}, and \concept{gamification}. 
+There is a tiny but important \fabiano{conceptual} difference {among them}. 
+\concept{Games} are built with the exclusive purpose of entertainment and fun. 
+\concept{Serious games} are pretty similar to games; in fact, they are a full-blown game, but serves a (serious) purpose that goes far beyond only fun; some examples of serious purposes are education, military training, health, business. 
+\concept{Gamification}, \fabiano{differently from} the other two, is not a game at all; it is ``\emph{the use of game elements and game-design techniques in non-game contexts}''~\cite{werbach2012win}.
+
+
+
+
+To understand the term \emph{non-game contexts}, %\fabianocr{which is central for understanding the concept of gamification,} 
+consider the current example. 
+%\fabiano{presented at the beginning of this section.} 
+The company 
+%in which the system was gamified 
+is a ``non-game context'' because the employees' purposes are not only fun. \fabiano{A classroom is another example, though from a different context: educational.} 
+Even though we can add entertainment or fun (as we usually do it when using gamification), it will be to support the teaching and learning processes, not to become a game.
+
+Game elements can be defined as small pieces, like Lego, that compose the games~\cite{werbach2012win}. 
+Using several Legos, we can build a car, a house, or many things our imagination allow us. Similarly, bringing the smaller pieces together, we develop a game, a serious game, or a gamified system, depending on our intention. 
+%\fabiano{Given that} the perspective of game elements is one of the six we used to classify the selected studies, 
+We go further in game elements in Section~\ref{sec:planning}. 
+For now, we anticipate that \fabiano{gamification includes three classes of elements:} game dynamics, game mechanics, and game components.
+That said, in this paper we use the term \emph{game element} as synonym of \emph{game component}.
+    
+    
+\vspace{-.2cm}    
+
+\subsection{Gamification in Software Testing} \label{sec:gamificationSoftDevelopment}
+ 
+ \fabiano{Gamification in software development, in general, is not the focus of our research}, but we address one of its development process phases: software testing. 
+ In our search, 
+ %\fabiano{detailed in Section~\ref{sec:planning}, 
+ four selected studies \cite{P01_Garcia2017, P06_DalSasso2017, 6363241, P15_Dubois} did not present approaches to gamify, \fabiano{specifically,} software testing activities. 
+ \fabiano{In fact, they were selected} for one reason: \fabiano{they encompass the software testing activity within the software development}.   
+    
+% proposed approaches to gamify any software engineering activity. We considered that those nine proposals may be applied to any of the software testing techniques for its generic and/or flexible characteristics.
+    
+
+
+\fabiano{In software development,} testing is performed with the aim of revealing faults~\cite{myers2011}. 
+However, it is not a simple or easy activity; not even intrinsically motivational for everyone, especially for developers. Sometimes, testing a new software release may take several rounds of back and forth between developers and quality assurance teams, until getting tedious and boring. 
+\fabiano{This is the} time to \emph{gamify}, and the state-of-the-art is discussed in the next sections.
+%\fabianocr{According to our results, } gamification approaches to support software testing  have been published in a grown number two years from now. 
+%(\eg \ \fabiano{our list of selected studies includes 6 primary studies in 2017, and 4 in 2016). 
+% Overall, only in 2010 gamification became highly investigated, but our results contain very few (only 5) \fabiano{studies} published from 2010 to 2015. This makes us believe that gamification has found a breeding ground in software testing to get mature.
+
+%HISTORIA: 1980 - Richard Bartle says that gamification  refers to "turning something not a game into a game". (WERBACH 2012, pag 28); Em 2003 houve o primeiro uso de gamification, but it was only in 2010 that gamification became widely applied, according Werbach. In our research, we found only two primary studies related to gamification in software testing after the year 2011. The subsequent years, from 2012 to 2015, summed only three primary studies. Only in 2016, six years after gamification became widely adopted, software testing field started to receive more attention with four publications.; and this number increased in 2017 to six publications.     
+
+\end{comment}
+
+Cloud computing has revolutionized the landscape of Artificial Intelligence (AI) by providing scalable infrastructure, vast data storage, and on-demand processing power, allowing the deployment of complex and large AI models and applications in general~\cite{li2019ai_cloud}. Cloud-based artificial intelligence applications span a multitude of domains, including healthcare, finance, and transportation, where they are used for critical tasks such as medical diagnostics, fraud detection, and autonomous vehicle control~\cite{esteva2019guide, jiang2017artificial}. These applications often rely on distributed architectures, microservices, and containerized environments to achieve agility, reliability, availability, and scalability~\cite{lewis2013microservices, wan2019microservice}.
+
+High availability (HA) is a design principle that aims to minimize system downtime and ensure continuity of service, even in the presence of faults or infrastructure failures ~\cite{verissimo2003reliable, jhawar2013fault}. In the context of cloud computing, HA refers to the ability of a system to remain operational and accessible even in the face of failures, be it hardware related, software or network~\cite{li2013survey}. HA is typically achieved through redundancy, fault tolerance, and automatic recovery mechanisms \cite{chieu2010dynamic}. Key metrics for evaluating HA include uptime percentage, Mean Time Between Failures (MTBF), and Mean Time to Recover (MTTR)~\cite{li2013survey}.
+
+The convergence of AI and cloud computing introduces some unique challenges in ensuring HA. In most scenarios, AI workloads require specialized hardware, such as GPUs, and are computationally intensive~\cite{gholami2021ai_cloud}. In addition, AI models are dynamic and need to be updated frequently, which can disrupt service availability~\cite{baylor2017tfserving, kouris2019resilience}. The distributed nature of cloud environments adds further complexity, as failures can occur in any part of the system, at any time~\cite{jhawar2013fault, sharma2016failure}.
+
+Currently, there are many techniques that can be employed to achieve HA in cloud-based AI systems. Redundancy, for example, involves deploying multiple instances of a service component so that if one fails, another can take over~\cite{li2013survey, jhawar2013fault}. Fault tolerance mechanisms, such as replication and checkpointing, help prevent data loss and minimize downtime in the event of a failure~\cite{candea2004recovery, gupta2018checkpointing}. Automatic recovery strategies, including failover and auto-scaling, are widely used in modern cloud platforms to restore services after unexpected disruptions~\cite{chieu2010dynamic, amazonHA2020}.
+
+Building upon the technical foundations and challenges presented in this section, the next chapter introduces the methodology adopted for conducting our systematic mapping study. We describe the research protocol, including the construction of the search string, the definition of inclusion and exclusion criteria, and the selection of relevant digital libraries. The goal is to provide a structured and reproducible approach for identifying, classifying, and analyzing existing literature on high availability strategies applied to artificial intelligence systems in cloud environments.
