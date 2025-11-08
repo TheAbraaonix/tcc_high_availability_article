@@ -1,0 +1,21 @@
+This section defines fundamental concepts required to understand our experimental comparison of AWS and Azure cloud platforms under different scaling approaches.
+
+\subsection{Cloud Platforms and Virtualization}
+
+Cloud computing platforms provide virtualized computational resources. Amazon ECS (Elastic Container Service) with EC2 launch type and Azure Container Apps abstract physical hardware into virtual CPUs (vCPUs) and memory allocations~\cite{aws2023ha, azure2023ha, aws2023ec2}. In hyperthreaded architectures, one vCPU equals one hardware thread (half a physical core)~\cite{intel2023ht}. Thread oversubscription occurs when total threads exceed available vCPUs, causing context-switching overhead and performance degradation~\cite{intel2023mkl}.
+
+\subsection{Scaling Approaches}
+
+\textbf{Worker Scaling} (process-level parallelism): Multiple worker processes execute on a single instance, sharing CPU, memory, and cache resources. Application servers such as Gunicorn spawn independent worker processes~\cite{gunicorn2023docs}. This approach minimizes infrastructure cost but introduces resource contention as worker count increases.
+
+\textbf{Horizontal Scaling} (instance-level parallelism): Multiple instances run independently with load balancers distributing incoming requests across instances using algorithms such as round-robin~\cite{aws2023elb, chieu2010dynamic}. AWS Application Load Balancer (ALB) provides explicit health checking and traffic distribution configuration, while Azure Container Apps manages load balancing internally when scaling to multiple replicas. This approach provides better fault isolation and potentially more predictable performance, but incurs additional infrastructure costs (and explicit load balancer costs for AWS).
+
+\subsection{Python Global Interpreter Lock}
+
+The Global Interpreter Lock (GIL) prevents parallel execution of Python bytecode within a single process~\cite{python2023gil}. Multi-process parallelism (worker scaling) circumvents this limitation. C-extensions (NumPy, PyTorch, TensorFlow) release the GIL during computations~\cite{pytorch2023threading}, allowing thread-level parallelism within each worker process. However, if each worker spawns multiple threads by default, total threads may exceed available vCPUs, negating parallelism benefits through excessive context switching.
+
+\subsection{Related Work and Research Gap}
+
+Model serving frameworks (TensorFlow Serving, TorchServe, Triton)~\cite{baylor2017tfserving, pytorch2023serve, nvidia2023triton} focus on GPU optimization and model management. Performance benchmarks (MLPerf)~\cite{reddi2020mlperf} emphasize raw computational performance rather than deployment configurations. Existing cloud platform comparisons~\cite{li2013survey, chieu2010dynamic} evaluate synthetic benchmarks or general-purpose applications.
+
+Our systematic mapping study~\cite{holanda2024high} revealed a fragmented research landscape with significant gaps in empirical research on AI system deployment in cloud environments, particularly the lack of studies addressing availability strategies, performance optimization, and platform-specific deployment considerations for AI inference workloads. Existing cloud platform comparisons~\cite{li2013survey, chieu2010dynamic} typically evaluate synthetic benchmarks or general-purpose applications rather than AI-specific workloads, with insufficient analysis of worker versus horizontal scaling trade-offs, cost-performance relationships, and cross-platform validation under controlled conditions with identical hardware specifications. This work addresses these gaps through controlled experimentation comparing Amazon ECS with EC2 launch type and Azure Container Apps across both scaling approaches for CPU-intensive AI inference.

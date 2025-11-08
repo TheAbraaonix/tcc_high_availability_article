@@ -1,0 +1,155 @@
+
+\documentclass[twocolumn]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\setlength{\columnsep}{20pt}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{array}
+\usepackage{color}
+\usepackage{pdflscape}
+\usepackage{placeins}
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{paralist}
+\usepackage[numbers]{natbib}
+\usepackage{titlesec}
+
+% Section formatting
+\titleformat{\section}
+  {\normalfont\fontsize{9}{11}\bfseries\scshape}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontsize{9}{11}\bfseries\scshape}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{9}{11}\itshape}{\thesubsubsection}{1em}{}
+
+% Body text
+\renewcommand{\normalsize}{\fontsize{9}{11}\selectfont}
+\normalsize
+
+\usepackage{fancyhdr}
+\usepackage{authblk}
+
+\pagestyle{plain}
+
+% Paragraph formatting
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Section spacing
+\titlespacing*{\section}{0pt}{1.5ex plus .2ex minus .2ex}{1ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1ex plus .2ex minus .2ex}{0.5ex plus .2ex}
+
+\usepackage{moreverb}
+\usepackage{paralist}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{color}
+\usepackage{pdflscape}
+\usepackage{placeins}
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{cuted}
+
+\linespread{1}
+
+\begin{document}
+
+\font\titleFont=cmr12 at 18pt
+\font\authorNameFont=cmr12 at 12pt
+\font\authorAffiliationFont=cmr12 at 9pt
+
+\title{{\titleFont AWS vs Azure Performance Comparison for CPU-Intensive AI Workloads: A Controlled Experimental Study}}
+
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{strip}
+    \centering
+    {\fontsize{18}{22}\bfseries\@title\par}
+    \vspace{2em}
+
+    % First row with 2 authors
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cc}
+      \begin{tabular}[t]{c}
+        {\fontsize{12}{14}\selectfont 1st Natan Depes Bilharinho} \\
+        {\fontsize{9}{11}\selectfont \textit{Department of Computer Science}} \\
+        {\fontsize{9}{11}\selectfont \textit{Universidade Vila Velha}} \\
+        {\fontsize{9}{11}\selectfont Vila Velha, Brazil} \\
+        {\fontsize{9}{11}\selectfont natandepes@hotmail.com}
+      \end{tabular}
+      &
+      \begin{tabular}[t]{c}
+        {\fontsize{12}{14}\selectfont 2nd Carlos Abraão Dordenoni Holanda} \\
+        {\fontsize{9}{11}\selectfont \textit{Department of Computer Science}} \\
+        {\fontsize{9}{11}\selectfont \textit{Universidade Vila Velha}} \\
+        {\fontsize{9}{11}\selectfont Vila Velha, Brazil} \\
+        {\fontsize{9}{11}\selectfont carlosholanda404@gmail.com}
+      \end{tabular}
+    \end{tabular*}
+
+    \vspace{2em}  % vertical space between rows
+
+    % Second row with 1 centered author
+    \begin{tabular}{c}
+      \begin{tabular}[t]{c}
+        {\fontsize{12}{14}\selectfont 3rd Gabriela Martins de Jesus} \\
+        {\fontsize{9}{11}\selectfont \textit{Department of Computer Science}} \\
+        {\fontsize{9}{11}\selectfont \textit{Universidade Vila Velha}} \\
+        {\fontsize{9}{11}\selectfont Vila Velha, Brazil} \\
+        {\fontsize{9}{11}\selectfont gabriela.jesus@uvv.br}
+      \end{tabular}
+    \end{tabular}
+
+    \vspace{2em}
+  \end{strip}
+}
+\makeatother
+
+\date{}  % No date shown
+
+\maketitle
+
+{
+\section*{ABSTRACT}\label{sec:abstract}
+\small
+\input{abstract}
+}
+
+{
+\section*{KEYWORDS}\label{sec:keyWords}
+\small
+Cloud computing; performance comparison; AWS; Azure; scaling strategies; AI inference; containerized deployment.
+}
+
+\section{Introduction}
+\input{introduction}
+
+\section{Background}
+\input{background}
+
+\section{System Design and Challenges}
+\input{system_design}
+
+\section{Experimental Setup}
+\input{experimental_setup}
+
+\section{Results and Discussion}
+\input{results_discussion}
+
+\section{Conclusion}
+\input{conclusion}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

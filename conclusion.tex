@@ -1,0 +1,17 @@
+This study presented a controlled experimental comparison of Amazon ECS with EC2 launch type and Azure Container Apps for CPU-intensive AI inference workloads, evaluating worker scaling versus horizontal scaling approaches under identical hardware and workload conditions.
+
+\subsection{Key Findings}
+
+Our experiments revealed that [FILL: AWS/Azure/both platforms] achieved [FILL]\% [higher/lower] throughput, with [FILL]\% difference in latency predictability. Both platforms demonstrated sub-linear scaling behavior, achieving [FILL]\% efficiency with worker scaling and [FILL]\% efficiency with horizontal scaling at maximum scale. Cost-performance analysis identified [FILL: specific configuration] as optimal for [FILL: use case], providing [FILL]\% cost savings while maintaining acceptable performance.
+
+Critical implementation challenges—CPU thread oversubscription, Python GIL-induced blocking inference, and AWS load balancer configuration complexity—required careful design decisions. Our dynamic thread limiting strategy, multi-worker deployment via Gunicorn, semaphore-based concurrency control, and platform-specific load balancer configuration enabled reliable, reproducible measurements across platforms. Notably, Azure Container Apps' built-in load balancing significantly simplified horizontal scaling deployment compared to AWS's manual ALB configuration.
+
+\subsection{Practical Contributions}
+
+This work provides empirical evidence for platform selection and scaling configuration decisions in CPU-intensive AI inference deployments. Organizations can use our findings to select between AWS and Azure based on throughput requirements, latency predictability needs, cost constraints, and deployment complexity tolerance. The thread limiting approach generalizes to any multi-worker Python deployment with CPU-intensive C-extensions. Additionally, practitioners evaluating platforms should consider operational complexity: Azure Container Apps' zero-configuration load balancing versus AWS's explicit ALB setup (Target Groups, Listeners, port mappings) represents a significant deployment effort differential.
+
+Our reproducible experimental framework (complete system implementation, Docker containers, experimental protocols) enables replication and extension to other AI models, cloud platforms, and workload patterns. The controlled comparison methodology isolates platform and scaling configuration impacts from confounding variables, providing clear attribution of performance differences.
+
+\subsection{Future Work}
+
+Future research should extend this comparison to GPU-accelerated inference, where different bottlenecks (PCIe bandwidth, CUDA kernel launch overhead) may alter scaling behavior. Evaluating additional cloud providers (Google Cloud Platform, Oracle Cloud) would broaden platform comparison scope. Testing under realistic request arrival distributions (Poisson, bursty) rather than concurrent batch submission would validate findings for production workloads. Finally, investigating dynamic auto-scaling policies based on queue depth and latency thresholds could optimize resource utilization for variable workloads.

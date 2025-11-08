@@ -1,0 +1,156 @@
+This section describes our system architecture, implementation challenges encountered when deploying multi-worker Python-based AI services, and the design decisions made to address these challenges.
+
+\subsection{System Overview}
+
+Our experimental system consists of four primary components working together to enable controlled performance comparison across cloud platforms and scaling approaches:
+
+\textbf{Backend API Service}: A FastAPI-based REST API serving image captioning requests using the Salesforce BLIP model~\cite{baylor2017tfserving}. The service handles file uploads, performs inference, and returns generated captions with timing metrics.
+
+\textbf{Frontend Testing Application}: A React/TypeScript web application providing file upload, experiment configuration, concurrent request submission, and real-time metrics visualization. The frontend enables controlled experimentation across different platforms and scaling configurations.
+
+\textbf{Load Balancer}: For AWS, Application Load Balancer (ALB) distributes requests across multiple ECS instances. For Azure, Container Apps provides built-in internal load balancing when scaling to multiple replicas. Health checks ensure traffic routes only to healthy instances.
+
+\textbf{Deployment Infrastructure}: Docker-containerized deployment on Amazon ECS with EC2 launch type and Azure Container Apps. Environment variable configuration supports both worker scaling (multiple processes on single instance) and horizontal scaling (multiple instances with load balancing) without code changes.
+
+\subsection{Critical Implementation Challenges}
+
+Deploying multi-worker Python-based AI inference services revealed several critical challenges that required careful design decisions. These challenges are fundamental to CPU-intensive AI workloads and generalize beyond our specific BLIP implementation.
+
+\subsubsection{Challenge 1: CPU Thread Oversubscription}
+
+\textbf{Problem}: By default, NumPy, PyTorch, and other C-extensions spawn multiple threads per worker process to parallelize matrix operations. In multi-worker deployments, this creates thread oversubscription. For example, 4 worker processes on a 4 vCPU instance, each spawning 4 threads by default, creates 16 threads competing for 4 vCPUs. This causes severe context-switching overhead, memory bandwidth contention, and cache thrashing.
+
+Preliminary experiments without thread limiting showed catastrophic performance degradation: 4 workers performed worse than 2 workers due to excessive thread contention. CPU utilization metrics showed saturation at 400\% (4 vCPUs × 100\%), but actual throughput decreased compared to configurations with fewer workers.
+
+\textbf{Root Cause}: C-extension libraries (Intel MKL, OpenBLAS) detect total system vCPUs at import time and configure thread pools accordingly, unaware of other worker processes competing for the same resources~\cite{intel2023mkl}.
+
+\subsubsection{Challenge 2: Blocking Inference and Default Request Serialization}
+
+\textbf{Problem}: The most critical challenge we encountered was that CPU-bound inference creates complete blocking behavior in single-worker deployments. When the BLIP model performs inference, all request processing pauses, creating a strict FIFO queue regardless of FastAPI's asynchronous capabilities or Python's default threading mechanisms.
+
+\textbf{Observed Behavior}: In our initial single-worker deployment:
+\begin{itemize}
+\item Single request: ~2.5 seconds average completion time
+\item 2 concurrent requests: ~5.0 seconds total (2.5s × 2), processed sequentially
+\item 3 concurrent requests: ~7.5 seconds total (2.5s × 3), strict FIFO processing
+\item Pattern: $T_{total} \approx n \times T_{single}$ where $n$ is concurrent request count
+\end{itemize}
+
+This linear scaling behavior renders the service unusable for production scenarios requiring concurrent request handling. FastAPI's async framework and Python's default threading provide no parallelism benefit because PyTorch inference holds the GIL during model execution, blocking all other request processing in that worker process. The second request cannot begin processing until the first completes inference entirely.
+
+\textbf{Root Cause}: Python's GIL prevents parallel execution of Python bytecode within a single process~\cite{python2023gil}. Although PyTorch (a C-extension) releases the GIL during tensor operations, the overall inference call still monopolizes the worker process, preventing concurrent request handling. Without multiple worker processes, concurrent requests queue and execute sequentially regardless of async/await syntax or threading attempts.
+
+\subsubsection{Challenge 3: Load Balancer Configuration Complexity (AWS-Specific)}
+
+\textbf{Problem}: AWS requires explicit Application Load Balancer (ALB) configuration for horizontal scaling, introducing significant setup complexity absent in Azure Container Apps' built-in load balancing. Azure simply scales to multiple replicas by changing the instance count—load balancing activates automatically without visible configuration. AWS demands manual creation and configuration of multiple interconnected resources.
+
+\textbf{Required AWS Configuration Steps}:
+\begin{itemize}
+\item \textit{Target Group creation}: Define target instances, health check endpoint (/api/health), health check interval (30s), and unhealthy threshold (3 failures)
+\item \textit{Listener configuration}: Configure ALB listener on port 80/443, attach target group, set routing rules
+\item \textit{ECS Task Definition port mapping}: Ensure container port (8000) maps correctly to target group port, maintaining consistency across task definition, service configuration, and target group
+\item \textit{Timeout configuration}: Override default 30-second idle timeout to 300 seconds to accommodate long-running inference requests (2-5s per request)
+\end{itemize}
+
+Port misconfiguration between ECS Task, Target Group, and Listener causes requests to fail silently with connection timeouts. Additionally, default timeout values (30s) terminate active inference requests prematurely, requiring explicit configuration adjustments.
+
+\textbf{Azure Simplicity}: Azure Container Apps abstracts all load balancing complexity. Scaling from 1 to 4 replicas requires only changing the replica count parameter—no target groups, listeners, port mappings, or timeout overrides. The platform manages load distribution, health checks, and timeouts internally with sensible defaults for containerized applications.
+
+\subsection{Design Decisions and Solutions}
+
+Based on these challenges, we made the following design decisions to ensure reliable, reproducible performance measurements. The overarching architectural decision was to deploy multiple worker processes to achieve concurrent request handling—the single-worker blocking behavior described in Challenge 2 makes multi-worker deployment mandatory for production workloads. All subsequent decisions address challenges introduced by this multi-worker approach.
+
+\subsubsection{Decision 1: Multi-Worker Deployment via Gunicorn}
+
+\textbf{Solution}: We deploy multiple Gunicorn worker processes (1, 2, or 4 workers depending on configuration) rather than relying on single-worker FastAPI with async/await. Each worker is an independent Python process capable of handling inference requests concurrently with other workers.
+
+\textbf{Rationale}: The blocking inference behavior (Challenge 2) necessitates process-level parallelism. Multi-worker deployment transforms the linear scaling pattern ($T_{total} \approx n \times 2.5s$) into parallel execution where multiple requests can execute simultaneously. With 4 workers on a 4 vCPU instance, theoretical maximum throughput increases from ~0.4 req/s (single worker) to ~1.6 req/s (4 workers), assuming perfect parallelism. This architectural decision enables all subsequent worker and horizontal scaling experiments.
+
+\textbf{Implementation}: Gunicorn spawns worker processes before importing application code, ensuring each worker loads the BLIP model independently into separate memory spaces. This process isolation prevents GIL contention across workers while introducing new challenges (thread oversubscription, resource contention) addressed by subsequent decisions.
+
+\subsubsection{Decision 2: Dynamic Thread Limiting Strategy}
+
+\textbf{Solution}: We implement dynamic thread allocation by configuring thread pool sizes for numerical libraries (OpenMP, Intel MKL, OpenBLAS, NumExpr) via environment variables before importing NumPy or PyTorch. The strategy divides total vCPUs by worker count:
+
+\[
+\text{threads\_per\_worker} = \max\left(1, \left\lfloor\frac{\text{total\_vCPUs}}{\text{worker\_count}}\right\rfloor\right)
+\]
+
+For our 4 vCPU instances:
+\begin{itemize}
+\item 1 worker: 4 threads per worker (utilizes all vCPUs)
+\item 2 workers: 2 threads per worker (total: 4 threads)
+\item 4 workers: 1 thread per worker (total: 4 threads)
+\end{itemize}
+
+This ensures total threads match available vCPUs, preventing context-switching overhead while maintaining parallelism benefits.
+
+\textbf{Rationale}: Thread limiting must occur before library import because thread pool sizes are fixed at import time~\cite{intel2023mkl}. Setting environment variables post-import has no effect—a common source of production performance issues. Our startup script ensures correct ordering.
+
+\textbf{Alternative Considered}: We considered pinning workers to specific CPU cores using core affinity tools, but this approach fails in containerized cloud environments where vCPU-to-physical-core mapping is opaque and may change due to cloud provider resource management.
+
+\subsubsection{Decision 3: Semaphore-Based Concurrency Control}
+
+\textbf{Solution}: Each worker creates a semaphore with limit of 1 during startup. Inference requests acquire the semaphore before loading the image and executing the model, then release it after generating the caption. This serializes inference operations within each worker while allowing request queuing without blocking the event loop.
+
+The BLIP model loads once per worker during initialization and remains in memory for the experiment duration. Multiple concurrent requests to the same worker queue at the semaphore rather than attempting multiple model loads.
+
+\textbf{Rationale}: Allowing concurrent inference within a single worker causes memory exhaustion (attempting to load model weights multiple times) and provides no performance benefit because inference is compute-bound and releases the GIL. The semaphore adds negligible overhead (~1ms acquisition time) while preventing OOM errors entirely.
+
+\textbf{Alternative Considered}: We considered using a thread pool for inference operations, but this provides no benefit because PyTorch already releases the GIL during forward passes. The semaphore approach is simpler and more reliable.
+
+\subsubsection{Decision 4: File Upload Instead of URL-Based Processing}
+
+\textbf{Solution}: Our API accepts multipart/form-data file uploads rather than image URLs. The frontend pre-loads all 300 images into browser memory and submits them concurrently as file uploads, ensuring the API receives image data immediately without performing downloads.
+
+\textbf{Rationale}: We want to measure pure inference performance without introducing network download bottlenecks or deceiving ourselves about actual request processing time. If the API had to download images from URLs, image download time could exceed inference time (~2.5s average), contaminating performance measurements with network variability unrelated to model or platform performance.
+
+URL-based approaches create multiple problems for controlled experimentation:
+\begin{itemize}
+\item \textit{Download time variability}: External server response times, network congestion, and geographic distance introduce unpredictable latency that varies independently of inference performance
+\item \textit{Bottleneck misattribution}: A 3-second image download + 2.5-second inference appears as 5.5-second total time, making it impossible to isolate platform performance
+\item \textit{External dependencies}: External server failures, rate limiting, or unavailability would cause request failures unrelated to cloud platform performance
+\item \textit{Resource waste}: API workers spend time downloading images rather than performing inference, reducing effective throughput
+\end{itemize}
+
+File uploads eliminate these confounding factors entirely. The browser handles all network I/O before requests reach the API, ensuring measured request time reflects only inference performance. This decision trades client bandwidth (uploading images) for experimental control and accurate performance attribution.
+
+\textbf{Implementation Note}: Modern browsers efficiently handle 300 concurrent file uploads through connection pooling (typically 6-8 connections per domain). Requests queue at the browser level, creating consistent backend pressure without overwhelming the network layer. All images arrive at the API ready for immediate processing.
+
+\subsubsection{Decision 5: Load Balancer Configuration for Horizontal Scaling}
+
+\textbf{Solution}: For AWS, we manually configure Application Load Balancer (ALB) including Target Groups, Listeners, port mappings, and timeout overrides to support long-running AI inference requests (Challenge 3). For Azure Container Apps, load balancing is managed internally by the platform when scaling to multiple replicas—no explicit configuration required. Table~\ref{tab:lb_config} summarizes the configuration.
+
+\begin{table}[h]
+\centering
+\caption{Load Balancer Configuration (Horizontal Scaling)}
+\label{tab:lb_config}
+\begin{tabular}{lll}
+\toprule
+\textbf{Parameter} & \textbf{AWS ALB} & \textbf{Azure Container Apps} \\
+\midrule
+Algorithm & Round-robin & Built-in (automatic) \\
+Health Endpoint & GET /api/health & GET /api/health \\
+Health Interval & 30 seconds & Default (internal) \\
+Unhealthy Threshold & 3 failures & Default (internal) \\
+Healthy Threshold & 2 successes & Default (internal) \\
+Request Timeout & 300 seconds & 300 seconds \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Rationale}: AWS ALB requires explicit multi-step configuration (Challenge 3): creating Target Groups with health check parameters, configuring Listeners with port routing, ensuring ECS Task Definition port mappings match, and overriding default 30-second timeout to 300 seconds. Port mismatches between these interconnected resources cause silent failures. Azure Container Apps abstracts this complexity entirely—scaling to multiple replicas automatically activates load balancing with sensible defaults for containerized workloads. Both approaches achieve equivalent functionality (distributing requests, health checking, timeout handling), but AWS demands significantly more manual configuration effort.
+
+\textbf{Validation}: Before each experiment, we verify load distribution by submitting 10 warm-up requests and confirming requests arrive at all instances/replicas through backend logs. This ensures load balancing functions correctly before actual measurements begin.
+
+\subsection{Technology Stack}
+
+The backend uses FastAPI with Gunicorn/Uvicorn for worker management, PyTorch and Transformers for BLIP model inference, and Pillow for image processing. A startup script dynamically selects Uvicorn (single-worker) or Gunicorn (multi-worker) based on configured worker count. The frontend uses React/TypeScript with concurrent request submission mechanisms—all 300 requests initiate simultaneously, creating maximum concurrency stress.
+
+Deployment uses Docker containers with environment variable configuration. Single Docker image, single application code supports all scaling configurations through configuration alone, enabling rapid reconfiguration during experiments: worker scaling (1, 2, or 4 workers on single instance) and horizontal scaling (1, 2, or 4 instances with 1 worker each).
+
+\subsection{Deployment Configuration}
+
+All configurations use standardized 4 vCPU / 8GB RAM instances on both platforms. Environment variables control worker count (1, 2, or 4 workers), request timeout (300 seconds), thread pool sizes for numerical libraries, and other runtime parameters. The frontend configures the appropriate endpoint: direct instance URL for worker scaling, load balancer URL for horizontal scaling.
+
+This architecture enables controlled experimentation: platform (AWS/Azure), scaling approach (worker scaling on single instance vs. horizontal scaling with multiple instances), and scale level (1, 2, or 4 workers/instances) vary independently while all other factors remain constant, isolating the performance impact of platform and scaling decisions.
