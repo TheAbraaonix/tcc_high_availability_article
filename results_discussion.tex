@@ -26,9 +26,9 @@ Response time consistency (measured by standard deviation) [FILL: improves/degra
 
 \subsection{Cost-Performance Trade-Offs (RQ4)}
 
-Table~\ref{tab:deployment_recs} translates performance findings into practical deployment recommendations, directly addressing Research Question RQ4. Cost calculations are based on published AWS and Azure on-demand pricing for the us-east-2 and East US 2 regions, respectively, including instance costs and load balancer charges where applicable.
+Table~\ref{tab:deployment_recs} translates performance findings into practical deployment recommendations, directly addressing Research Question RQ4. Cost calculations are based on published AWS and Azure on-demand pricing for the us-east-2 and East US 2 regions, respectively, including instance costs (per hour for compute resources) and load balancer charges where applicable.
 
-\textbf{Interpretation}: For latency-sensitive applications requiring fast response times, [FILL: configuration] provides best average response time at \$[FILL] per 1000 requests. For applications prioritizing predictability, [FILL: configuration] offers lowest response time variance (±[FILL]s standard deviation) at \$[FILL] per 1000 requests. For budget-constrained scenarios, [FILL: configuration] provides lowest cost per request (\$[FILL] per 1000), though with [FILL: higher/lower] average response time.
+\textbf{Interpretation}: For latency-sensitive applications requiring fast response times, [FILL: configuration] provides best average response time at \$[FILL] per hour. For applications prioritizing predictability, [FILL: configuration] offers lowest response time variance (±[FILL]s standard deviation) at \$[FILL] per hour. For budget-constrained scenarios, [FILL: configuration] provides lowest hourly cost (\$[FILL]/hour), though with [FILL: higher/lower] average response time.
 
 \subsection{Scaling Behavior Analysis (RQ2)}
 
@@ -120,7 +120,7 @@ Speedup (vs baseline) & 1.00× & [FILL]× & [FILL]× & 1.00× & [FILL]× & [FILL
 \label{tab:deployment_recs}
 \begin{tabular}{llllll}
 \toprule
-\textbf{Priority} & \textbf{Approach} & \textbf{Platform} & \textbf{Config} & \textbf{Avg Response (s)} & \textbf{Est. Cost/1k req} \\
+\textbf{Priority} & \textbf{Approach} & \textbf{Platform} & \textbf{Config} & \textbf{Avg Response (s)} & \textbf{Est. Cost/Hour} \\
 \midrule
 Best Response Time & [FILL: Worker/Horizontal] & [FILL: AWS/Azure] & [FILL] & [FILL] & \$[FILL] \\
 Most Consistent & [FILL: Worker/Horizontal] & [FILL: AWS/Azure] & [FILL] & [FILL] (±[FILL]s) & \$[FILL] \\
