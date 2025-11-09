@@ -4,7 +4,43 @@ This section details experimental configuration including cloud infrastructure s
 
 Both platforms use standardized instance configurations with identical Docker images. Table~\ref{tab:infrastructure} summarizes platform-specific configuration.
 
-\begin{table}[h]
+\subsection{Test Dataset}
+
+The dataset contains 300 unique images from Pexels~\cite{pexels}: 100 medium-resolution (12MP) and 200 high-resolution (24MP) in JPG format. This two-tier structure simulates realistic workloads with varying computational complexity. Images were collected using the Pexels API with a generic "random" search term, ensuring diverse content and varied inference complexity across different scene types. All images are unique, ensuring independent observations.
+
+\subsection{Experimental Configurations}
+
+We evaluate 10 configurations testing two scaling approaches independently across both platforms. Each platform tests a baseline configuration (1 worker, 1 replica) plus two scaling strategies: worker scaling (varying workers while keeping 1 replica) and horizontal scaling (varying replicas while keeping 1 worker). All configurations use standardized 4 vCPU / 8GB RAM instances. Table~\ref{tab:configs} summarizes all test configurations.
+
+\textbf{Baseline} establishes reference performance with minimal configuration (1 replica, 1 worker), providing a control for evaluating scaling effectiveness.
+
+\textbf{Worker Scaling} tests process-level parallelism on a single replica. We evaluate 2 and 4 workers on a single instance. Multiple Gunicorn workers share CPU, memory, and cache resources on the same machine.
+
+\textbf{Horizontal Scaling} tests instance-level parallelism with load balancing. We evaluate 2 and 4 replicas, each running a single worker. Requests are distributed across replicas via AWS ALB or Azure Container Apps' built-in load balancing.
+
+These approaches are tested independently (no cross-combinations) to isolate the performance impact of each scaling strategy.
+
+\subsection{Execution Protocol}
+
+Each configuration is tested 3 times (N=900 observations per configuration: 300 requests × 3 repetitions). For each run, we deploy the container with target configuration, wait 2 minutes for initialization, and execute 30 warm-up requests. The frontend loads 300 images, configures the appropriate endpoint (direct instance or load balancer), and submits all requests concurrently while capturing timing metrics. After completion, we verify no anomalies occurred, collect logs, and archive results. A 10-minute cooldown period separates runs to ensure system stabilization.
+
+\subsection{Metrics Collection}
+
+We collect performance metrics to enable comprehensive analysis. Table~\ref{tab:metrics} summarizes all captured metrics.
+
+\subsection{Data Validation}
+
+Before analysis, we validate that all 300 requests per run completed successfully with valid HTTP responses. Each configuration is tested 3 times, and metrics are averaged across the 3 repetitions to ensure reliability. Runs with anomalies or incomplete data are discarded and re-executed.
+
+\subsection{Cost Analysis}
+
+To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models. Cost calculation considers instance pricing (based on vCPU/memory allocation), load balancer costs (for horizontal scaling configurations), and total experiment duration. This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-2 (AWS) and East US 2 (Azure) regions as of the experiment date.
+
+\subsection{Experimental Setup Tables}
+
+The following tables provide detailed specifications for the experimental configuration.
+
+\begin{table*}[!t]
 \centering
 \caption{Cloud Infrastructure Configuration}
 \label{tab:infrastructure}
@@ -21,17 +57,9 @@ Networking & AWS VPC + Private Subnets & Virtual Network (automatic) \\
 Logging/Monitoring & CloudWatch Logs & Azure Monitor \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\subsection{Test Dataset}
-
-The dataset contains 300 unique images from Pexels~\cite{pexels}: 100 medium-resolution (12MP) and 200 high-resolution (24MP) in JPG format. This two-tier structure simulates realistic workloads with varying computational complexity. Images were collected using the Pexels API with a generic "random" search term, ensuring diverse content and varied inference complexity across different scene types. All images are unique, ensuring independent observations.
-
-\subsection{Experimental Configurations}
-
-We evaluate 10 configurations testing two scaling approaches independently across both platforms. Each platform tests a baseline configuration (1 worker, 1 replica) plus two scaling strategies: worker scaling (varying workers while keeping 1 replica) and horizontal scaling (varying replicas while keeping 1 worker). All configurations use standardized 4 vCPU / 8GB RAM instances. Table~\ref{tab:configs} summarizes all test configurations.
-
-\begin{table}[h]
+\begin{table*}[!t]
 \centering
 \caption{Test Configurations}
 \label{tab:configs}
@@ -59,25 +87,9 @@ HS3 & Azure & Horizontal & 2 & 1 \\
 HS4 & Azure & Horizontal & 4 & 1 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\textbf{Baseline} establishes reference performance with minimal configuration (1 replica, 1 worker), providing a control for evaluating scaling effectiveness.
-
-\textbf{Worker Scaling} tests process-level parallelism on a single replica. We evaluate 2 and 4 workers on a single instance. Multiple Gunicorn workers share CPU, memory, and cache resources on the same machine.
-
-\textbf{Horizontal Scaling} tests instance-level parallelism with load balancing. We evaluate 2 and 4 replicas, each running a single worker. Requests are distributed across replicas via AWS ALB or Azure Container Apps' built-in load balancing.
-
-These approaches are tested independently (no cross-combinations) to isolate the performance impact of each scaling strategy.
-
-\subsection{Execution Protocol}
-
-Each configuration is tested 3 times (N=900 observations per configuration: 300 requests × 3 repetitions). For each run, we deploy the container with target configuration, wait 2 minutes for initialization, and execute 30 warm-up requests. The frontend loads 300 images, configures the appropriate endpoint (direct instance or load balancer), and submits all requests concurrently while capturing timing metrics. After completion, we verify no anomalies occurred, collect logs, and archive results. A 10-minute cooldown period separates runs to ensure system stabilization.
-
-\subsection{Metrics Collection}
-
-We collect performance metrics to enable comprehensive analysis. Table~\ref{tab:metrics} summarizes all captured metrics.
-
-\begin{table}[h]
+\begin{table*}[!t]
 \centering
 \caption{Collected Metrics}
 \label{tab:metrics}
@@ -94,12 +106,6 @@ Failed Requests & Count of requests with HTTP errors \\
 Success Rate & Percentage of requests completed without errors \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\subsection{Data Validation}
-
-Before analysis, we validate that all 300 requests per run completed successfully with valid HTTP responses. Each configuration is tested 3 times, and metrics are averaged across the 3 repetitions to ensure reliability. Runs with anomalies or incomplete data are discarded and re-executed.
-
-\subsection{Cost Analysis}
-
-To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models. Cost calculation considers instance pricing (based on vCPU/memory allocation), load balancer costs (for horizontal scaling configurations), and total experiment duration. This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-2 (AWS) and East US 2 (Azure) regions as of the experiment date.
+\FloatBarrier
