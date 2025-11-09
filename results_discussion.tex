@@ -2,15 +2,61 @@ This section presents experimental results and interprets findings, answering ou
 
 \subsection{AWS vs Azure Performance Comparison (RQ1, RQ3)}
 
-Table~\ref{tab:platform_comparison} compares Amazon ECS with Fargate launch type and Azure Container Apps across all configurations, directly addressing Research Question RQ1 (platform performance comparison) and RQ3 (consistency and predictability).
+Table~\ref{tab:platform_comparison} compares Amazon ECS with Fargate launch type and Azure Container Apps, directly addressing Research Question RQ1 (platform performance comparison) and RQ3 (consistency and predictability). Metrics represent averages across all five configurations per platform (AWS: B1, WS1, WS2, HS1, HS2; Azure: B2, WS3, WS4, HS3, HS4), providing an overall platform-level comparison independent of specific scaling approaches.
 
-\begin{table}[h]
+\textbf{Interpretation}: [FILL: AWS/Azure/Neither] demonstrates superior performance, achieving [FILL]\% lower average response time. Response time variance (standard deviation) is [FILL]\% [lower/higher] on [FILL: platform], indicating [FILL: better/worse] predictability. Statistical analysis reveals [FILL: significant/negligible] differences between platforms (p=[FILL]). These findings suggest that [FILL: platform choice significantly impacts performance / both platforms perform comparably, making scaling approach the more critical decision factor].
+
+For consistency-critical applications (RQ3), [FILL: AWS/Azure] provides [FILL]\% lower response time variance, translating to more predictable user experience. However, the absolute difference ([FILL]s) may be [FILL: negligible/significant] depending on application requirements.
+
+\subsection{Worker Scaling Results (RQ2)}
+
+Table~\ref{tab:worker_scaling} presents performance for worker scaling across both platforms. Worker scaling tests baseline (1 worker) and scaled configurations (2 and 4 workers) on a single replica, with multiple processes sharing CPU, memory, and cache resources.
+
+\textbf{Interpretation}: Both platforms exhibit sub-linear scaling behavior. AWS achieves [FILL]× speedup with 4 workers (WS2), while Azure achieves [FILL]× speedup (WS4). The sub-linear scaling indicates that doubling worker count does not halve response time, reflecting the inherent limitations of process-level parallelism.
+
+Response time variability (standard deviation) [FILL: increases/decreases/remains stable] as worker count grows, suggesting [FILL: more/less] consistent performance under higher parallelism. This behavior is expected when multiple workers compete for shared CPU, memory, and cache resources on the same machine, though specific resource metrics were not collected in this study.
+
+\subsection{Horizontal Scaling Results (RQ2)}
+
+Table~\ref{tab:horizontal_scaling} presents performance for horizontal scaling across both platforms. Horizontal scaling tests baseline (1 replica) and scaled configurations (2 and 4 replicas) with load balancing, each replica running a single worker process.
+
+\textbf{Interpretation}: Horizontal scaling demonstrates [FILL: better/worse/similar] scaling efficiency compared to worker scaling. AWS achieves [FILL]× speedup at 4 replicas (HS2), while Azure achieves [FILL]× speedup (HS4).
+
+Response time consistency (measured by standard deviation) [FILL: improves/degrades] with horizontal scaling compared to worker scaling, suggesting [FILL: better/worse] predictability when distributing load across separate replicas. The comparison between worker and horizontal scaling indicates that [FILL: isolating processes to separate replicas / keeping workers on a single replica] provides better performance for this workload, though the specific impact of load balancer overhead and network latency was not directly measured.
+
+\subsection{Cost-Performance Trade-Offs (RQ4)}
+
+Table~\ref{tab:deployment_recs} translates performance findings into practical deployment recommendations, directly addressing Research Question RQ4. Cost calculations are based on published AWS and Azure on-demand pricing for the us-east-2 and East US 2 regions, respectively, including instance costs and load balancer charges where applicable.
+
+\textbf{Interpretation}: For latency-sensitive applications requiring fast response times, [FILL: configuration] provides best average response time at \$[FILL] per 1000 requests. For applications prioritizing predictability, [FILL: configuration] offers lowest response time variance (±[FILL]s standard deviation) at \$[FILL] per 1000 requests. For budget-constrained scenarios, [FILL: configuration] provides lowest cost per request (\$[FILL] per 1000), though with [FILL: higher/lower] average response time.
+
+\subsection{Scaling Behavior Analysis (RQ2)}
+
+Research Question RQ2 asks whether AWS and Azure exhibit different scaling behavior. Results show [FILL: similar/divergent] scaling patterns: AWS scaling efficiency with 4 workers (WS2) achieves [FILL]× speedup, while Azure (WS4) achieves [FILL]× speedup. For horizontal scaling, AWS (HS2) achieves [FILL]× speedup at 4 replicas, while Azure (HS4) achieves [FILL]×. The [FILL]\% difference is [FILL: statistically significant / within measurement variance] (p=[FILL]).
+
+Both platforms demonstrate that [FILL: horizontal scaling / worker scaling] provides better scaling efficiency, with [FILL]× speedup compared to [FILL]× for [FILL: worker / horizontal] scaling at the 4-unit level. This finding suggests that [FILL: distributing load across separate replicas / increasing workers on a single replica] is more effective for this AI inference workload, and this trend appears consistent across both cloud providers.
+
+\subsection{Practical Implications}
+
+Organizations deploying similar AI inference workloads should conduct application-specific profiling to determine optimal configurations. A recommended approach includes: establishing a baseline with single-worker/single-replica deployment, incrementally testing both worker and horizontal scaling, identifying the point of diminishing returns where additional resources yield minimal performance gains, and balancing performance requirements with cost constraints using cloud provider pricing models.
+
+Response time metrics (average and variance) provide direct indicators of user experience and should be primary considerations for auto-scaling policies. For production deployments, monitoring success rates and response time distribution helps identify configuration issues before they impact end users.
+
+\subsection{Limitations}
+
+This study focuses on BLIP image captioning (medium-sized transformer model) and CPU-only inference. Larger models, GPU-accelerated inference, or different architectures may exhibit different scaling characteristics. Our concurrent batch submission represents a stress-test scenario; real-world workloads with variable arrival rates may favor different configurations. The study evaluates AWS and Azure; other providers (Google Cloud, Oracle Cloud) may demonstrate different performance profiles.
+
+\subsection{Experimental Data Tables}
+
+The following tables (Tables~\ref{tab:platform_comparison}--\ref{tab:deployment_recs}) present the complete experimental data supporting the analyses above. Table~\ref{tab:platform_comparison} provides the overall platform comparison, Tables~\ref{tab:worker_scaling} and~\ref{tab:horizontal_scaling} show detailed scaling results, and Table~\ref{tab:deployment_recs} summarizes deployment recommendations.
+
+\begin{table*}[!t]
 \centering
-\caption{AWS vs Azure Performance Comparison}
+\caption{AWS vs Azure Overall Performance Comparison (Averaged Across All Configurations)}
 \label{tab:platform_comparison} 
 \begin{tabular}{lll}
 \toprule
-\textbf{Metric} & \textbf{AWS ECS} & \textbf{Azure Container Apps} \\
+\textbf{Metric} & \textbf{AWS ECS (n=5)} & \textbf{Azure Container Apps (n=5)} \\
 \midrule
 Avg Response Time (s) & [FILL] & [FILL] \\
 Min Response Time (s) & [FILL] & [FILL] \\
@@ -22,17 +68,9 @@ Performance Difference & \multicolumn{2}{c}{[FILL]\% (p=[FILL])} \\
 Statistical Significance & \multicolumn{2}{c}{[FILL: significant/not significant]} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\textbf{Interpretation}: [FILL: AWS/Azure/Neither] demonstrates superior performance, achieving [FILL]\% lower average response time. Response time variance (standard deviation) is [FILL]\% [lower/higher] on [FILL: platform], indicating [FILL: better/worse] predictability. Statistical analysis reveals [FILL: significant/negligible] differences between platforms (p=[FILL]). These findings suggest that [FILL: platform choice significantly impacts performance / both platforms perform comparably, making scaling approach the more critical decision factor].
-
-For consistency-critical applications (RQ3), [FILL: AWS/Azure] provides [FILL]\% lower response time variance, translating to more predictable user experience. However, the absolute difference ([FILL]s) may be [FILL: negligible/significant] depending on application requirements.
-
-\subsection{Worker Scaling Results (RQ2)}
-
-Table~\ref{tab:worker_scaling} presents performance for worker scaling across both platforms. Worker scaling tests baseline (1 worker) and scaled configurations (2 and 4 workers) on a single replica, with multiple processes sharing CPU, memory, and cache resources.
-
-\begin{table}[h]
+\begin{table*}[!t]
 \centering
 \caption{Worker Scaling Performance (4 vCPU / 8GB RAM, Single Replica)}
 \label{tab:worker_scaling}
@@ -52,17 +90,9 @@ Success Rate (\%) & [FILL] & [FILL] & [FILL] & [FILL] & [FILL] & [FILL] \\
 Speedup (vs baseline) & 1.00× & [FILL]× & [FILL]× & 1.00× & [FILL]× & [FILL]× \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\textbf{Interpretation}: Both platforms exhibit sub-linear scaling behavior. AWS achieves [FILL]× speedup with 4 workers (WS2), while Azure achieves [FILL]× speedup (WS4). The sub-linear scaling indicates that doubling worker count does not halve response time, reflecting the inherent limitations of process-level parallelism.
-
-Response time variability (standard deviation) [FILL: increases/decreases/remains stable] as worker count grows, suggesting [FILL: more/less] consistent performance under higher parallelism. This behavior is expected when multiple workers compete for shared CPU, memory, and cache resources on the same machine, though specific resource metrics were not collected in this study.
-
-\subsection{Horizontal Scaling Results (RQ2)}
-
-Table~\ref{tab:horizontal_scaling} presents performance for horizontal scaling across both platforms. Horizontal scaling tests baseline (1 replica) and scaled configurations (2 and 4 replicas) with load balancing, each replica running a single worker process.
-
-\begin{table}[h]
+\begin{table*}[!t]
 \centering
 \caption{Horizontal Scaling Performance (4 vCPU / 8GB RAM per Replica)}
 \label{tab:horizontal_scaling}
@@ -82,17 +112,9 @@ Success Rate (\%) & [FILL] & [FILL] & [FILL] & [FILL] & [FILL] & [FILL] \\
 Speedup (vs baseline) & 1.00× & [FILL]× & [FILL]× & 1.00× & [FILL]× & [FILL]× \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\textbf{Interpretation}: Horizontal scaling demonstrates [FILL: better/worse/similar] scaling efficiency compared to worker scaling. AWS achieves [FILL]× speedup at 4 replicas (HS2), while Azure achieves [FILL]× speedup (HS4).
-
-Response time consistency (measured by standard deviation) [FILL: improves/degrades] with horizontal scaling compared to worker scaling, suggesting [FILL: better/worse] predictability when distributing load across separate replicas. The comparison between worker and horizontal scaling indicates that [FILL: isolating processes to separate replicas / keeping workers on a single replica] provides better performance for this workload, though the specific impact of load balancer overhead and network latency was not directly measured.
-
-\subsection{Cost-Performance Trade-Offs (RQ4)}
-
-Table~\ref{tab:deployment_recs} translates performance findings into practical deployment recommendations, directly addressing Research Question RQ4. Cost calculations are based on published AWS and Azure on-demand pricing for the us-east-2 and East US 2 regions, respectively, including instance costs and load balancer charges where applicable.
-
-\begin{table*}[h]
+\begin{table*}[!t]
 \centering
 \caption{Deployment Recommendations by Priority}
 \label{tab:deployment_recs}
@@ -108,20 +130,4 @@ Balanced & [FILL: Worker/Horizontal] & [FILL: AWS/Azure] & [FILL] & [FILL] & \$[
 \end{tabular}
 \end{table*}
 
-\textbf{Interpretation}: For latency-sensitive applications requiring fast response times, [FILL: configuration] provides best average response time at \$[FILL] per 1000 requests. For applications prioritizing predictability, [FILL: configuration] offers lowest response time variance (±[FILL]s standard deviation) at \$[FILL] per 1000 requests. For budget-constrained scenarios, [FILL: configuration] provides lowest cost per request (\$[FILL] per 1000), though with [FILL: higher/lower] average response time.
-
-\subsection{Scaling Behavior Analysis (RQ2)}
-
-Research Question RQ2 asks whether AWS and Azure exhibit different scaling behavior. Results show [FILL: similar/divergent] scaling patterns: AWS scaling efficiency with 4 workers (WS2) achieves [FILL]× speedup, while Azure (WS4) achieves [FILL]× speedup. For horizontal scaling, AWS (HS2) achieves [FILL]× speedup at 4 replicas, while Azure (HS4) achieves [FILL]×. The [FILL]\% difference is [FILL: statistically significant / within measurement variance] (p=[FILL]).
-
-Both platforms demonstrate that [FILL: horizontal scaling / worker scaling] provides better scaling efficiency, with [FILL]× speedup compared to [FILL]× for [FILL: worker / horizontal] scaling at the 4-unit level. This finding suggests that [FILL: distributing load across separate replicas / increasing workers on a single replica] is more effective for this AI inference workload, and this trend appears consistent across both cloud providers.
-
-\subsection{Practical Implications}
-
-Organizations deploying similar AI inference workloads should conduct application-specific profiling to determine optimal configurations. A recommended approach includes: establishing a baseline with single-worker/single-replica deployment, incrementally testing both worker and horizontal scaling, identifying the point of diminishing returns where additional resources yield minimal performance gains, and balancing performance requirements with cost constraints using cloud provider pricing models.
-
-Response time metrics (average and variance) provide direct indicators of user experience and should be primary considerations for auto-scaling policies. For production deployments, monitoring success rates and response time distribution helps identify configuration issues before they impact end users.
-
-\subsection{Limitations}
-
-This study focuses on BLIP image captioning (medium-sized transformer model) and CPU-only inference. Larger models, GPU-accelerated inference, or different architectures may exhibit different scaling characteristics. Our concurrent batch submission represents a stress-test scenario; real-world workloads with variable arrival rates may favor different configurations. The study evaluates AWS and Azure; other providers (Google Cloud, Oracle Cloud) may demonstrate different performance profiles.
+\FloatBarrier
