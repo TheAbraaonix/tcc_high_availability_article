@@ -1,0 +1,46 @@
+This section reviews existing research on cloud platform performance comparison, AI inference deployment, and scaling strategies, positioning our work within the broader research landscape.
+
+\subsection{Cloud Platform Performance Comparisons}
+
+Several studies have compared cloud platform performance across different dimensions. Li et al.~\cite{li2013survey} surveyed availability, reliability, and energy-efficiency metrics across cloud platforms, finding significant variability in service-level agreement guarantees but focusing on general-purpose workloads rather than AI-specific applications. Chieu et al.~\cite{chieu2010dynamic} evaluated dynamic scaling in virtualized environments, demonstrating the effectiveness of adaptive resource allocation for web applications under varying load. However, their work examined synthetic benchmarks and did not address the specific challenges of CPU-intensive AI inference workloads.
+
+More recent comparative studies have evaluated AWS and Azure across various dimensions~\cite{aws2023ha, azure2023ha}. Industry benchmarks have shown platform-specific performance characteristics, with AWS demonstrating advantages in compute-intensive tasks and Azure excelling in hybrid cloud scenarios. However, these comparisons typically rely on vendor-provided benchmarks or heterogeneous hardware configurations, making it difficult to isolate platform-level performance differences from instance-type variations. Furthermore, existing comparisons rarely address AI inference workloads with their unique characteristics of CPU-bound computation, blocking inference operations, and specific threading requirements.
+
+\subsection{AI Model Serving and Inference Optimization}
+
+Model serving frameworks have focused primarily on GPU-accelerated inference and model management. TensorFlow Serving~\cite{baylor2017tfserving}, TorchServe~\cite{pytorch2023serve}, and NVIDIA Triton~\cite{nvidia2023triton} provide production-ready infrastructure for model deployment with features such as model versioning, batching, and monitoring. These frameworks optimize GPU utilization through batching strategies and CUDA kernel optimizations but provide limited guidance for CPU-only inference scenarios.
+
+Performance benchmarking efforts such as MLPerf~\cite{reddi2020mlperf} establish standardized metrics for comparing ML system performance. However, MLPerf focuses on raw computational performance (throughput, latency under fixed batch sizes) rather than deployment configurations, scaling approaches, or platform-specific characteristics. Recent work on containerized AI deployment emphasizes Kubernetes orchestration and autoscaling mechanisms, but these studies typically evaluate single platforms or focus on GPU workloads where compute characteristics differ fundamentally from CPU-bound inference.
+
+\subsection{Multi-Worker Deployment and Scaling Strategies}
+
+Python-based web frameworks such as Gunicorn and Uvicorn provide multi-worker deployment capabilities, with community guidelines recommending worker counts based on CPU core availability~\cite{gunicorn2023docs}. However, these recommendations do not account for thread-level parallelism in numerical libraries or the blocking nature of CPU-intensive operations. Empirical studies of multi-worker Python deployments remain limited, with most guidance deriving from practitioner experience rather than controlled experimentation.
+
+Research on horizontal scaling and load balancing typically focuses on stateless web services with short request durations. Existing work has not systematically compared worker scaling versus horizontal scaling for AI inference workloads where request processing times (2-5 seconds) differ significantly from typical web application patterns (milliseconds). Furthermore, the interaction between Python's Global Interpreter Lock, multi-worker deployments, and C-extension thread management has received limited attention in the academic literature.
+
+\subsection{Research Gap and Positioning}
+
+Our systematic mapping study~\cite{holanda2024high} of 706 papers revealed a fragmented research landscape with only 5 publications directly addressing high availability strategies for AI systems in cloud environments. None of these studies conducted controlled cross-platform performance comparisons with identical hardware specifications, nor did they systematically evaluate scaling approach trade-offs (worker vs. horizontal scaling) for CPU-intensive AI inference workloads.
+
+Table~\ref{tab:related_work_comparison} summarizes key related work and highlights gaps our study addresses. Existing research either compares cloud platforms using heterogeneous configurations, evaluates AI inference on single platforms, or focuses on GPU-accelerated workloads. No prior work has combined controlled cross-platform comparison (identical hardware), AI inference workloads (CPU-bound with blocking operations), and systematic scaling approach evaluation (worker vs. horizontal with cost-performance analysis).
+
+\begin{table*}[t]
+\centering
+\caption{Comparison of Related Work}
+\label{tab:related_work_comparison}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Study} & \textbf{Platforms} & \textbf{Identical HW} & \textbf{AI Workload} & \textbf{Scaling Comparison} & \textbf{CPU-focused} \\
+\midrule
+Li et al.~\cite{li2013survey} & Multi-cloud & \xmark & \xmark & \xmark & \xmark \\
+Chieu et al.~\cite{chieu2010dynamic} & Single cloud & \cmark & \xmark & \xmark & \xmark \\
+TensorFlow Serving~\cite{baylor2017tfserving} & Platform-agnostic & N/A & \cmark & \xmark & \xmark \\
+TorchServe~\cite{pytorch2023serve} & Platform-agnostic & N/A & \cmark & \xmark & \xmark \\
+MLPerf~\cite{reddi2020mlperf} & Multi-platform & \xmark & \cmark & \xmark & Partial \\
+\midrule
+\textbf{This Work} & \textbf{AWS + Azure} & \textbf{\cmark} & \textbf{\cmark} & \textbf{\cmark} & \textbf{\cmark} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Our work makes three key advances over existing research: (1) controlled comparison using identical 4 vCPU / 8GB RAM instances on both platforms, eliminating hardware as a confounding variable; (2) systematic evaluation of worker scaling versus horizontal scaling with quantified performance, cost, and consistency trade-offs; and (3) detailed documentation of implementation challenges (thread oversubscription, GIL limitations, load balancer configuration) and solutions applicable to broader CPU-intensive AI deployment scenarios.

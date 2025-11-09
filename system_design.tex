@@ -10,7 +10,7 @@ Our experimental system consists of four primary components working together to 
 
 \textbf{Load Balancer}: For AWS, Application Load Balancer (ALB) distributes requests across multiple ECS instances. For Azure, Container Apps provides built-in internal load balancing when scaling to multiple replicas. Health checks ensure traffic routes only to healthy instances.
 
-\textbf{Deployment Infrastructure}: Docker-containerized deployment on Amazon ECS with EC2 launch type and Azure Container Apps. Environment variable configuration supports both worker scaling (multiple processes on single instance) and horizontal scaling (multiple instances with load balancing) without code changes.
+\textbf{Deployment Infrastructure}: Docker-containerized deployment on Amazon ECS with Fargate launch type and Azure Container Apps. Environment variable configuration supports both worker scaling (multiple processes on single instance) and horizontal scaling (multiple instances with load balancing) without code changes.
 
 \subsection{Critical Implementation Challenges}
 
@@ -49,12 +49,11 @@ This linear scaling behavior renders the service unusable for production scenari
 \item \textit{Target Group creation}: Define target instances, health check endpoint (/api/health), health check interval (30s), and unhealthy threshold (3 failures)
 \item \textit{Listener configuration}: Configure ALB listener on port 80/443, attach target group, set routing rules
 \item \textit{ECS Task Definition port mapping}: Ensure container port (8000) maps correctly to target group port, maintaining consistency across task definition, service configuration, and target group
-\item \textit{Timeout configuration}: Override default 30-second idle timeout to 300 seconds to accommodate long-running inference requests (2-5s per request)
 \end{itemize}
 
-Port misconfiguration between ECS Task, Target Group, and Listener causes requests to fail silently with connection timeouts. Additionally, default timeout values (30s) terminate active inference requests prematurely, requiring explicit configuration adjustments.
+Port misconfiguration between ECS Task, Target Group, and Listener causes requests to fail silently with connection timeouts. AWS ALB default idle timeout (60 seconds) and Azure Container Apps timeout (240 seconds, managed internally by Azure Front Door) proved sufficient for our workload—no timeout failures occurred across all experimental configurations.
 
-\textbf{Azure Simplicity}: Azure Container Apps abstracts all load balancing complexity. Scaling from 1 to 4 replicas requires only changing the replica count parameter—no target groups, listeners, port mappings, or timeout overrides. The platform manages load distribution, health checks, and timeouts internally with sensible defaults for containerized applications.
+\textbf{Azure Simplicity}: Azure Container Apps abstracts all load balancing complexity. Scaling from 1 to 4 replicas requires only changing the replica count parameter—no target groups, listeners, port mappings, or timeout overrides. The platform manages load distribution, health checks, and timeouts internally with sensible defaults for containerized applications. Additionally, Azure includes load balancing at no additional cost, while AWS ALB incurs separate hourly charges, impacting the cost-performance trade-offs analyzed in RQ4.
 
 \subsection{Design Decisions and Solutions}
 
@@ -119,27 +118,9 @@ File uploads eliminate these confounding factors entirely. The browser handles a
 
 \subsubsection{Decision 5: Load Balancer Configuration for Horizontal Scaling}
 
-\textbf{Solution}: For AWS, we manually configure Application Load Balancer (ALB) including Target Groups, Listeners, port mappings, and timeout overrides to support long-running AI inference requests (Challenge 3). For Azure Container Apps, load balancing is managed internally by the platform when scaling to multiple replicas—no explicit configuration required. Table~\ref{tab:lb_config} summarizes the configuration.
+\textbf{Solution}: For AWS, we manually configure Application Load Balancer (ALB) including Target Groups, Listeners, and port mappings (Challenge 3). For Azure Container Apps, load balancing is managed internally by the platform when scaling to multiple replicas—no explicit configuration required.
 
-\begin{table}[h]
-\centering
-\caption{Load Balancer Configuration (Horizontal Scaling)}
-\label{tab:lb_config}
-\begin{tabular}{lll}
-\toprule
-\textbf{Parameter} & \textbf{AWS ALB} & \textbf{Azure Container Apps} \\
-\midrule
-Algorithm & Round-robin & Built-in (automatic) \\
-Health Endpoint & GET /api/health & GET /api/health \\
-Health Interval & 30 seconds & Default (internal) \\
-Unhealthy Threshold & 3 failures & Default (internal) \\
-Healthy Threshold & 2 successes & Default (internal) \\
-Request Timeout & 300 seconds & 300 seconds \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\textbf{Rationale}: AWS ALB requires explicit multi-step configuration (Challenge 3): creating Target Groups with health check parameters, configuring Listeners with port routing, ensuring ECS Task Definition port mappings match, and overriding default 30-second timeout to 300 seconds. Port mismatches between these interconnected resources cause silent failures. Azure Container Apps abstracts this complexity entirely—scaling to multiple replicas automatically activates load balancing with sensible defaults for containerized workloads. Both approaches achieve equivalent functionality (distributing requests, health checking, timeout handling), but AWS demands significantly more manual configuration effort.
+\textbf{Rationale}: AWS ALB requires explicit multi-step configuration (Challenge 3): creating Target Groups with health check parameters, configuring Listeners with port routing, and ensuring ECS Task Definition port mappings match correctly. Port mismatches between these interconnected resources cause silent failures. Both platforms use round-robin load distribution and health checks on the /api/health endpoint. We use default timeout values (AWS ALB: 60 seconds idle timeout, Azure: 240 seconds managed by Azure Front Door) which proved adequate for our workload with no timeout failures observed. Azure Container Apps abstracts this complexity entirely—scaling to multiple replicas automatically activates load balancing with sensible defaults for containerized workloads. Both approaches achieve equivalent functionality (distributing requests, health checking, timeout handling), but AWS demands significantly more manual configuration effort while incurring additional hourly ALB charges.
 
 \textbf{Validation}: Before each experiment, we verify load distribution by submitting 10 warm-up requests and confirming requests arrive at all instances/replicas through backend logs. This ensures load balancing functions correctly before actual measurements begin.
 
@@ -151,6 +132,6 @@ Deployment uses Docker containers with environment variable configuration. Singl
 
 \subsection{Deployment Configuration}
 
-All configurations use standardized 4 vCPU / 8GB RAM instances on both platforms. Environment variables control worker count (1, 2, or 4 workers), request timeout (300 seconds), thread pool sizes for numerical libraries, and other runtime parameters. The frontend configures the appropriate endpoint: direct instance URL for worker scaling, load balancer URL for horizontal scaling.
+All configurations use standardized 4 vCPU / 8GB RAM instances on both platforms. Environment variables control worker count (1, 2, or 4 workers), thread pool sizes for numerical libraries, and other runtime parameters. Gunicorn worker timeout is configured to 120 seconds to protect against hung worker processes. Load balancer timeouts use platform defaults (AWS ALB: 60 seconds, Azure: 240 seconds) which proved sufficient for our workload. The frontend configures the appropriate endpoint: direct instance URL for worker scaling, load balancer URL for horizontal scaling.
 
 This architecture enables controlled experimentation: platform (AWS/Azure), scaling approach (worker scaling on single instance vs. horizontal scaling with multiple instances), and scale level (1, 2, or 4 workers/instances) vary independently while all other factors remain constant, isolating the performance impact of platform and scaling decisions.
