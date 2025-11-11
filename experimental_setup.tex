@@ -2,7 +2,7 @@ This section details experimental configuration including cloud infrastructure s
 
 \subsection{Cloud Infrastructure}
 
-Both platforms use standardized instance configurations with identical Docker images. Table~\ref{tab:infrastructure} summarizes platform-specific configuration.
+Both platforms use standardized instance configurations with identical Docker images. We initially planned to use AWS us-east-2 (Ohio) but encountered Fargate On-Demand vCPU resource limits (12 vCPUs) that prevented deploying 4 replicas simultaneously for horizontal scaling tests. Switching to AWS us-east-1 (Virginia) not only resolved this limitation but improved experimental validity: both AWS us-east-1 and Azure East US 2 data centers are physically located in Virginia, minimizing geographic distance variability and ensuring that network latency differences reflect platform architecture rather than physical proximity to the test client. Table~\ref{tab:infrastructure} summarizes platform-specific configuration.
 
 \subsection{Test Dataset}
 
@@ -34,7 +34,7 @@ Before analysis, we validate that all 300 requests per run completed successfull
 
 \subsection{Cost Analysis}
 
-To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models. Cost calculation considers instance pricing (based on vCPU/memory allocation), load balancer costs (for horizontal scaling configurations), and total experiment duration. This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-2 (AWS) and East US 2 (Azure) regions as of the experiment date.
+To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models~\cite{aws2023fargate_pricing, aws2023elb_pricing, aws2023ecr_pricing, azure2023containerapps_pricing, azure2023acr_pricing}. Cost calculation considers instance pricing (based on vCPU/memory allocation), load balancer costs (for horizontal scaling configurations), and total experiment duration. This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-1 (AWS) and East US 2 (Azure) regions as of the experiment date.
 
 \subsection{Experimental Setup Tables}
 
@@ -50,7 +50,7 @@ The following tables provide detailed specifications for the experimental config
 \midrule
 Service & ECS (Fargate launch type) & Container Apps \\
 Compute Allocation & 4 vCPUs / 8GB & 4 vCPUs / 8GB \\
-Region & us-east-2 &  East US 2 \\
+Region & us-east-1 (Virginia) &  East US 2 (Virginia) \\
 Load Balancer & ALB & Built-in (internal) \\
 Health Check & /api/health (30s) & /api/health (default probe) \\
 Networking & AWS VPC + Private Subnets & Virtual Network (automatic) \\
