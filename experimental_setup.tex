@@ -34,7 +34,7 @@ Before analysis, we validate that all 300 requests per run completed successfull
 
 \subsection{Cost Analysis}
 
-To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models~\cite{aws2023fargate_pricing, aws2023elb_pricing, aws2023ecr_pricing, azure2023containerapps_pricing, azure2023acr_pricing}. Cost calculation considers instance pricing (based on vCPU/memory allocation), load balancer costs (for horizontal scaling configurations), and total experiment duration. This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-1 (AWS) and East US 2 (Azure) regions as of the experiment date.
+To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models~\cite{aws2023fargate_pricing, aws2023elb_pricing, aws2023ecr_pricing, azure2023containerapps_pricing, azure2023acr_pricing}. Cost calculation methodology considers: (1) compute costs based on vCPU and memory allocation per hour, multiplied by the number of replicas and total runtime duration, (2) load balancer costs for horizontal scaling configurations (AWS ALB hourly charges; Azure Container Apps includes load balancing at no additional cost), and (3) container registry storage costs (minimal, amortized across all experiments). For each configuration, we calculate total hourly cost and compute cost-per-request and cost-per-performance metrics to identify optimal configurations across different priorities (minimum latency, maximum consistency, budget optimization). This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-1 (AWS) and East US 2 (Azure) regions as of the experiment date.
 
 \subsection{Experimental Setup Tables}
 
@@ -104,6 +104,8 @@ Median Response Time & Median (50th percentile) response time \\
 Std Deviation & Standard deviation of response times \\
 Failed Requests & Count of requests with HTTP errors \\
 Success Rate & Percentage of requests completed without errors \\
+Speedup (vs baseline) & Performance improvement relative to baseline (1 worker, 1 replica) \\
+Cost per Hour & Estimated hourly cost based on compute and load balancer pricing \\
 \bottomrule
 \end{tabular}
 \end{table*}

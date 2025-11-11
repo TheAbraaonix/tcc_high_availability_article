@@ -42,7 +42,7 @@ This linear scaling behavior renders the service unusable for production scenari
 
 \subsubsection{Challenge 3: Load Balancer Configuration Complexity (AWS-Specific)}
 
-\textbf{Problem}: AWS requires explicit Application Load Balancer (ALB) configuration for horizontal scaling, introducing significant setup complexity absent in Azure Container Apps' built-in load balancing. Azure simply scales to multiple replicas by changing the instance count—load balancing activates automatically without visible configuration. AWS demands manual creation and configuration of multiple interconnected resources.
+\textbf{Problem}: AWS requires explicit Application Load Balancer (ALB) configuration for horizontal scaling, introducing significant setup complexity absent in Azure Container Apps' built-in load balancing. Azure simply scales to multiple replicas by changing the instance count; load balancing activates automatically without visible configuration. AWS demands manual creation and configuration of multiple interconnected resources.
 
 \textbf{Required AWS Configuration Steps}:
 \begin{itemize}
@@ -51,13 +51,13 @@ This linear scaling behavior renders the service unusable for production scenari
 \item \textit{ECS Task Definition port mapping}: Ensure container port (8000) maps correctly to target group port, maintaining consistency across task definition, service configuration, and target group
 \end{itemize}
 
-Port misconfiguration between ECS Task, Target Group, and Listener causes requests to fail silently with connection timeouts. AWS ALB default idle timeout (60 seconds) and Azure Container Apps timeout (240 seconds, managed internally by Azure Front Door) proved sufficient for our workload—no timeout failures occurred across all experimental configurations.
+Port misconfiguration between ECS Task, Target Group, and Listener causes requests to fail silently with connection timeouts. AWS ALB default idle timeout (60 seconds) and Azure Container Apps timeout (240 seconds, managed internally by Azure Front Door) proved sufficient for our workload, with no timeout failures occurring across all experimental configurations.
 
-\textbf{Azure Simplicity}: Azure Container Apps abstracts all load balancing complexity. Scaling from 1 to 4 replicas requires only changing the replica count parameter—no target groups, listeners, port mappings, or timeout overrides. The platform manages load distribution, health checks, and timeouts internally with sensible defaults for containerized applications. Additionally, Azure includes load balancing at no additional cost, while AWS ALB incurs separate hourly charges, impacting the cost-performance trade-offs analyzed in RQ4.
+\textbf{Azure Simplicity}: Azure Container Apps abstracts all load balancing complexity. Scaling from 1 to 4 replicas requires only changing the replica count parameter (no target groups, listeners, port mappings, or timeout overrides). The platform manages load distribution, health checks, and timeouts internally with sensible defaults for containerized applications. Additionally, Azure includes load balancing at no additional cost, while AWS ALB incurs separate hourly charges, impacting the cost-performance trade-offs analyzed in RQ4.
 
 \subsection{Design Decisions and Solutions}
 
-Based on these challenges, we made the following design decisions to ensure reliable, reproducible performance measurements. The overarching architectural decision was to deploy multiple worker processes to achieve concurrent request handling—the single-worker blocking behavior described in Challenge 2 makes multi-worker deployment mandatory for production workloads. All subsequent decisions address challenges introduced by this multi-worker approach.
+Based on these challenges, we made the following design decisions to ensure reliable, reproducible performance measurements. The overarching architectural decision was to deploy multiple worker processes to achieve concurrent request handling; the single-worker blocking behavior described in Challenge 2 makes multi-worker deployment mandatory for production workloads. All subsequent decisions address challenges introduced by this multi-worker approach.
 
 \subsubsection{Decision 1: Multi-Worker Deployment via Gunicorn}
 
@@ -84,7 +84,7 @@ For our 4 vCPU instances:
 
 This ensures total threads match available vCPUs, preventing context-switching overhead while maintaining parallelism benefits.
 
-\textbf{Rationale}: Thread limiting must occur before library import because thread pool sizes are fixed at import time~\cite{intel2023mkl}. Setting environment variables post-import has no effect—a common source of production performance issues. Our startup script ensures correct ordering.
+\textbf{Rationale}: Thread limiting must occur before library import because thread pool sizes are fixed at import time~\cite{intel2023mkl}. Setting environment variables post-import has no effect (a common source of production performance issues). Our startup script ensures correct ordering.
 
 \textbf{Alternative Considered}: We considered pinning workers to specific CPU cores using core affinity tools, but this approach fails in containerized cloud environments where vCPU-to-physical-core mapping is opaque and may change due to cloud provider resource management.
 
@@ -118,20 +118,20 @@ File uploads eliminate these confounding factors entirely. The browser handles a
 
 \subsubsection{Decision 5: Load Balancer Configuration for Horizontal Scaling}
 
-\textbf{Solution}: For AWS, we manually configure Application Load Balancer (ALB) including Target Groups, Listeners, and port mappings (Challenge 3). For Azure Container Apps, load balancing is managed internally by the platform when scaling to multiple replicas—no explicit configuration required.
+\textbf{Solution}: For AWS, we manually configure Application Load Balancer (ALB) including Target Groups, Listeners, and port mappings (Challenge 3). For Azure Container Apps, load balancing is managed internally by the platform when scaling to multiple replicas (no explicit configuration required).
 
-\textbf{Rationale}: AWS ALB requires explicit multi-step configuration (Challenge 3): creating Target Groups with health check parameters, configuring Listeners with port routing, and ensuring ECS Task Definition port mappings match correctly. Port mismatches between these interconnected resources cause silent failures. Both platforms use round-robin load distribution and health checks on the /api/health endpoint. We use default timeout values (AWS ALB: 60 seconds idle timeout, Azure: 240 seconds managed by Azure Front Door) which proved adequate for our workload with no timeout failures observed. Azure Container Apps abstracts this complexity entirely—scaling to multiple replicas automatically activates load balancing with sensible defaults for containerized workloads. Both approaches achieve equivalent functionality (distributing requests, health checking, timeout handling), but AWS demands significantly more manual configuration effort while incurring additional hourly ALB charges.
+\textbf{Rationale}: AWS ALB requires explicit multi-step configuration (Challenge 3): creating Target Groups with health check parameters, configuring Listeners with port routing, and ensuring ECS Task Definition port mappings match correctly. Port mismatches between these interconnected resources cause silent failures. Both platforms use round-robin load distribution and health checks on the /api/health endpoint. We use default timeout values (AWS ALB: 60 seconds idle timeout, Azure: 240 seconds managed by Azure Front Door) which proved adequate for our workload with no timeout failures observed. Azure Container Apps abstracts this complexity entirely; scaling to multiple replicas automatically activates load balancing with sensible defaults for containerized workloads. Both approaches achieve equivalent functionality (distributing requests, health checking, timeout handling), but AWS demands significantly more manual configuration effort while incurring additional hourly ALB charges.
 
-\textbf{Validation}: Before each experiment, we verify load distribution by submitting 10 warm-up requests and confirming requests arrive at all instances/replicas through backend logs. This ensures load balancing functions correctly before actual measurements begin.
+\textbf{Validation}: Before each experiment, we verify load distribution by submitting 30 warm-up requests and confirming requests arrive at all instances/replicas through backend logs. This ensures load balancing functions correctly before actual measurements begin.
 
 \subsection{Technology Stack}
 
-The backend uses FastAPI with Gunicorn/Uvicorn for worker management, PyTorch and Transformers for BLIP model inference, and Pillow for image processing. A startup script dynamically selects Uvicorn (single-worker) or Gunicorn (multi-worker) based on configured worker count. The frontend uses React/TypeScript with concurrent request submission mechanisms—all 300 requests initiate simultaneously, creating maximum concurrency stress.
+The backend uses FastAPI with Gunicorn/Uvicorn for worker management, PyTorch and Transformers for BLIP model inference, and Pillow for image processing. A startup script dynamically selects Uvicorn (single-worker) or Gunicorn (multi-worker) based on configured worker count. The frontend uses React/TypeScript with concurrent request submission mechanisms; all 300 requests initiate simultaneously, creating maximum concurrency stress.
 
 Deployment uses Docker containers with environment variable configuration. Single Docker image, single application code supports all scaling configurations through configuration alone, enabling rapid reconfiguration during experiments: worker scaling (1, 2, or 4 workers on single instance) and horizontal scaling (1, 2, or 4 instances with 1 worker each).
 
 \subsection{Deployment Configuration}
 
-All configurations use standardized 4 vCPU / 8GB RAM instances on both platforms. Environment variables control worker count (1, 2, or 4 workers), thread pool sizes for numerical libraries, and other runtime parameters. Gunicorn worker timeout is configured to 120 seconds to protect against hung worker processes. Load balancer timeouts use platform defaults (AWS ALB: 60 seconds, Azure: 240 seconds) which proved sufficient for our workload. The frontend configures the appropriate endpoint: direct instance URL for worker scaling, load balancer URL for horizontal scaling.
+All configurations use standardized 4 vCPU / 8GB RAM instances on both platforms. Both platforms deploy to Virginia data centers (AWS us-east-1 and Azure East US 2) to minimize geographic distance variability, ensuring network latency differences reflect platform architecture rather than physical proximity to the test client. Environment variables control worker count (1, 2, or 4 workers), thread pool sizes for numerical libraries, and other runtime parameters. Gunicorn worker timeout is configured to 120 seconds to protect against hung worker processes. Load balancer timeouts use platform defaults (AWS ALB: 60 seconds, Azure: 240 seconds) which proved sufficient for our workload. The frontend configures the appropriate endpoint: direct instance URL for worker scaling, load balancer URL for horizontal scaling.
 
 This architecture enables controlled experimentation: platform (AWS/Azure), scaling approach (worker scaling on single instance vs. horizontal scaling with multiple instances), and scale level (1, 2, or 4 workers/instances) vary independently while all other factors remain constant, isolating the performance impact of platform and scaling decisions.
