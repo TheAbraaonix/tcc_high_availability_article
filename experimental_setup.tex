@@ -2,7 +2,7 @@ This section details experimental configuration including cloud infrastructure s
 
 \subsection{Cloud Infrastructure}
 
-Both platforms use standardized instance configurations with identical Docker images. We initially planned to use AWS us-east-2 (Ohio) but encountered Fargate On-Demand vCPU resource limits (12 vCPUs) that prevented deploying 4 replicas simultaneously for horizontal scaling tests. Switching to AWS us-east-1 (Virginia) not only resolved this limitation but improved experimental validity: both AWS us-east-1 and Azure East US 2 data centers are physically located in Virginia, minimizing geographic distance variability and ensuring that network latency differences reflect platform architecture rather than physical proximity to the test client. Table~\ref{tab:infrastructure} summarizes platform-specific configuration.
+Both platforms use standardized instance configurations with identical Docker~\cite{docker2024} images. We initially planned to use AWS us-east-2 (Ohio) but encountered Fargate On-Demand vCPU resource limits (12 vCPUs) that prevented deploying 4 replicas simultaneously for horizontal scaling tests. Switching to AWS us-east-1 (Virginia) not only resolved this limitation but improved experimental validity: both AWS us-east-1 and Azure East US 2 data centers are physically located in Virginia, minimizing geographic distance variability and ensuring that network latency differences reflect platform architecture rather than physical proximity to the test client. Table~\ref{tab:infrastructure} summarizes platform-specific configuration.
 
 \subsection{Test Dataset}
 
@@ -14,7 +14,7 @@ We evaluate 10 configurations testing two scaling approaches independently acros
 
 \textbf{Baseline} establishes reference performance with minimal configuration (1 replica, 1 worker), providing a control for evaluating scaling effectiveness.
 
-\textbf{Worker Scaling} tests process-level parallelism on a single replica. We evaluate 2 and 4 workers on a single instance. Multiple Gunicorn workers share CPU, memory, and cache resources on the same machine.
+\textbf{Worker Scaling} tests process-level parallelism on a single replica. We evaluate 2 and 4 workers on a single instance. Multiple Gunicorn~\cite{gunicorn2023docs} workers share CPU, memory, and cache resources on the same machine.
 
 \textbf{Horizontal Scaling} tests instance-level parallelism with load balancing. We evaluate 2 and 4 replicas, each running a single worker. Requests are distributed across replicas via AWS ALB or Azure Container Apps' built-in load balancing.
 

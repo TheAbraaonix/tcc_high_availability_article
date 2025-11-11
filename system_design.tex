@@ -4,13 +4,13 @@ This section describes our system architecture, implementation challenges encoun
 
 Our experimental system consists of four primary components working together to enable controlled performance comparison across cloud platforms and scaling approaches:
 
-\textbf{Backend API Service}: A FastAPI-based REST API serving image captioning requests using the Salesforce BLIP model~\cite{baylor2017tfserving}. The service handles file uploads, performs inference, and returns generated captions with timing metrics.
+\textbf{Backend API Service}: A FastAPI~\cite{fastapi2024}-based REST API serving image captioning requests using the Salesforce BLIP model~\cite{li2022blip}. The service handles file uploads, performs inference, and returns generated captions with timing metrics.
 
-\textbf{Frontend Testing Application}: A React/TypeScript web application providing file upload, experiment configuration, concurrent request submission, and real-time metrics visualization. The frontend enables controlled experimentation across different platforms and scaling configurations.
+\textbf{Frontend Testing Application}: A React~\cite{react2024}/TypeScript~\cite{typescript2024} web application providing file upload, experiment configuration, concurrent request submission, and real-time metrics visualization. The frontend enables controlled experimentation across different platforms and scaling configurations.
 
 \textbf{Load Balancer}: For AWS, Application Load Balancer (ALB) distributes requests across multiple ECS instances. For Azure, Container Apps provides built-in internal load balancing when scaling to multiple replicas. Health checks ensure traffic routes only to healthy instances.
 
-\textbf{Deployment Infrastructure}: Docker-containerized deployment on Amazon ECS with Fargate launch type and Azure Container Apps. Environment variable configuration supports both worker scaling (multiple processes on single instance) and horizontal scaling (multiple instances with load balancing) without code changes.
+\textbf{Deployment Infrastructure}: Docker~\cite{docker2024}-containerized deployment on Amazon ECS with Fargate launch type and Azure Container Apps. Environment variable configuration supports both worker scaling (multiple processes on single instance) and horizontal scaling (multiple instances with load balancing) without code changes.
 
 \subsection{Critical Implementation Challenges}
 
@@ -18,11 +18,11 @@ Deploying multi-worker Python-based AI inference services revealed several criti
 
 \subsubsection{Challenge 1: CPU Thread Oversubscription}
 
-\textbf{Problem}: By default, NumPy, PyTorch, and other C-extensions spawn multiple threads per worker process to parallelize matrix operations. In multi-worker deployments, this creates thread oversubscription. For example, 4 worker processes on a 4 vCPU instance, each spawning 4 threads by default, creates 16 threads competing for 4 vCPUs. This causes severe context-switching overhead, memory bandwidth contention, and cache thrashing.
+\textbf{Problem}: By default, NumPy~\cite{numpy2024}, PyTorch, and other C-extensions spawn multiple threads per worker process to parallelize matrix operations. In multi-worker deployments, this creates thread oversubscription. For example, 4 worker processes on a 4 vCPU instance, each spawning 4 threads by default, creates 16 threads competing for 4 vCPUs. This causes severe context-switching overhead, memory bandwidth contention, and cache thrashing.
 
 Preliminary experiments without thread limiting showed catastrophic performance degradation: 4 workers performed worse than 2 workers due to excessive thread contention. CPU utilization metrics showed saturation at 400\% (4 vCPUs × 100\%), but actual throughput decreased compared to configurations with fewer workers.
 
-\textbf{Root Cause}: C-extension libraries (Intel MKL, OpenBLAS) detect total system vCPUs at import time and configure thread pools accordingly, unaware of other worker processes competing for the same resources~\cite{intel2023mkl}.
+\textbf{Root Cause}: C-extension libraries (Intel MKL, OpenBLAS~\cite{openblas2024}) detect total system vCPUs at import time and configure thread pools accordingly, unaware of other worker processes competing for the same resources~\cite{intel2023mkl}.
 
 \subsubsection{Challenge 2: Blocking Inference and Default Request Serialization}
 
@@ -36,7 +36,7 @@ Preliminary experiments without thread limiting showed catastrophic performance 
 \item Pattern: $T_{total} \approx n \times T_{single}$ where $n$ is concurrent request count
 \end{itemize}
 
-This linear scaling behavior renders the service unusable for production scenarios requiring concurrent request handling. FastAPI's async framework and Python's default threading provide no parallelism benefit because PyTorch inference holds the GIL during model execution, blocking all other request processing in that worker process. The second request cannot begin processing until the first completes inference entirely.
+This linear scaling behavior renders the service unusable for production scenarios requiring concurrent request handling. FastAPI's~\cite{fastapi2024} async framework and Python's default threading provide no parallelism benefit because PyTorch inference holds the GIL during model execution, blocking all other request processing in that worker process. The second request cannot begin processing until the first completes inference entirely.
 
 \textbf{Root Cause}: Python's GIL prevents parallel execution of Python bytecode within a single process~\cite{python2023gil}. Although PyTorch (a C-extension) releases the GIL during tensor operations, the overall inference call still monopolizes the worker process, preventing concurrent request handling. Without multiple worker processes, concurrent requests queue and execute sequentially regardless of async/await syntax or threading attempts.
 
