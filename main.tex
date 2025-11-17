@@ -18,6 +18,21 @@
 \usepackage{paralist}
 \usepackage[numbers]{natbib}
 \usepackage{titlesec}
+\usepackage{float}
+
+% Float placement parameters - very aggressive settings
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{5}
+\setcounter{bottomnumber}{5}
+\setcounter{totalnumber}{10}
+
+% Reduce spacing around floats
+\setlength{\floatsep}{10pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
 
 % Section formatting
 \titleformat{\section}

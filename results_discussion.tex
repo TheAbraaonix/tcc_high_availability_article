@@ -60,7 +60,7 @@ This study focuses on BLIP image captioning (medium-sized transformer model) and
 
 The following tables (Tables~\ref{tab:platform_comparison}--\ref{tab:deployment_recs}) present the complete experimental data supporting the analyses above. Table~\ref{tab:platform_comparison} provides the overall platform comparison, Tables~\ref{tab:worker_scaling} and~\ref{tab:horizontal_scaling} show detailed scaling results, and Table~\ref{tab:deployment_recs} summarizes deployment recommendations.
 
-\begin{table*}[!t]
+\begin{table*}[!htbp]
 \centering
 \caption{AWS vs Azure Overall Performance Comparison (Averaged Across All Configurations)}
 \label{tab:platform_comparison} 
@@ -80,7 +80,7 @@ Statistical Significance & \multicolumn{2}{c}{Not significant (small difference)
 \end{tabular}
 \end{table*}
 
-\begin{table*}[!t]
+\begin{table*}[!htbp]
 \centering
 \caption{Worker Scaling Performance (4 vCPU / 8GB RAM, Single Replica)}
 \label{tab:worker_scaling}
@@ -102,7 +102,7 @@ Speedup (vs baseline) & 1.00× & 1.28× & 1.69× & 1.00× & 1.29× & 1.45× \\
 \end{tabular}
 \end{table*}
 
-\begin{table*}[!t]
+\begin{table*}[!htbp]
 \centering
 \caption{Horizontal Scaling Performance (4 vCPU / 8GB RAM per Replica)}
 \label{tab:horizontal_scaling}
@@ -124,7 +124,7 @@ Speedup (vs baseline) & 1.00× & 2.00× & 3.42× & 1.00× & 1.51× & 1.50× \\
 \end{tabular}
 \end{table*}
 
-\begin{table*}[!t]
+\begin{table*}[!htbp]
 \centering
 \caption{Deployment Recommendations by Priority}
 \label{tab:deployment_recs}
@@ -140,4 +140,4 @@ Balanced & Worker & Azure & WS4 (4W) & 160.23 & \$0.439 \\
 \end{tabular}
 \end{table*}
 
-\FloatBarrier
+

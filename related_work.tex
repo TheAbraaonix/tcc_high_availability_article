@@ -24,13 +24,13 @@ Our systematic mapping study~\cite{holanda2024high} of 706 papers revealed a fra
 
 Table~\ref{tab:related_work_comparison} summarizes key related work and highlights gaps our study addresses. Existing research either compares cloud platforms using heterogeneous configurations, evaluates AI inference on single platforms, or focuses on GPU-accelerated workloads. No prior work has combined controlled cross-platform comparison (identical hardware), AI inference workloads (CPU-bound with blocking operations), and systematic scaling approach evaluation (worker vs. horizontal with cost-performance analysis).
 
-\begin{table*}[t]
+\begin{table*}[!htbp]
 \centering
 \caption{Comparison of Related Work}
 \label{tab:related_work_comparison}
-\begin{tabular}{llcccc}
+\begin{tabular}{ll*{4}{c}}
 \toprule
-\textbf{Study} & \textbf{Platforms} & \textbf{Identical HW} & \textbf{AI Workload} & \textbf{Scaling Comparison} & \textbf{CPU-focused} \\
+\textbf{Study} & \textbf{Platforms} & \rotatebox{90}{\textbf{Identical HW}} & \rotatebox{90}{\textbf{AI Workload}} & \rotatebox{90}{\textbf{Scaling Comparison}} & \rotatebox{90}{\textbf{CPU-focused}} \\
 \midrule
 Li et al.~\cite{li2013survey} & Multi-cloud & \xmark & \xmark & \xmark & \xmark \\
 Chieu et al.~\cite{chieu2010dynamic} & Single cloud & \cmark & \xmark & \xmark & \xmark \\
