@@ -20,7 +20,7 @@ Research on horizontal scaling and load balancing typically focuses on stateless
 
 \subsection{Research Gap and Positioning}
 
-Our systematic mapping study~\cite{holanda2024high} of 706 papers revealed a fragmented research landscape with only 5 publications directly addressing high availability strategies for AI systems in cloud environments. None of these studies conducted controlled cross-platform performance comparisons with identical hardware specifications, nor did they systematically evaluate scaling approach trade-offs (worker vs. horizontal scaling) for CPU-intensive AI inference workloads.
+Our systematic mapping study~\cite{holandabilharinhodejesus2025high} of 706 papers revealed a fragmented research landscape with only 5 publications directly addressing high availability strategies for AI systems in cloud environments. None of these studies conducted controlled cross-platform performance comparisons with identical hardware specifications, nor did they systematically evaluate scaling approach trade-offs (worker vs. horizontal scaling) for CPU-intensive AI inference workloads.
 
 Table~\ref{tab:related_work_comparison} summarizes key related work and highlights gaps our study addresses. Existing research either compares cloud platforms using heterogeneous configurations, evaluates AI inference on single platforms, or focuses on GPU-accelerated workloads. No prior work has combined controlled cross-platform comparison (identical hardware), AI inference workloads (CPU-bound with blocking operations), and systematic scaling approach evaluation (worker vs. horizontal with cost-performance analysis).
 
@@ -40,6 +40,7 @@ MLPerf~\cite{reddi2020mlperf} & Multi-platform & \xmark & \cmark & \xmark & Part
 \midrule
 \textbf{This Work} & \textbf{AWS + Azure} & \textbf{\cmark} & \textbf{\cmark} & \textbf{\cmark} & \textbf{\cmark} \\
 \bottomrule
+\multicolumn{6}{l}{\footnotesize Note: checkmark = Yes; cross = No; N/A = Not Applicable for platform-agnostic frameworks.} \\
 \end{tabular}
 \end{table*}
 
