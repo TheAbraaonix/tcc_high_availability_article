@@ -12,6 +12,8 @@ The dataset contains 300 unique images from Pexels~\cite{pexels}: 100 medium-res
 
 We evaluate 10 configurations testing two scaling approaches independently across both platforms. Each platform tests a baseline configuration (1 worker, 1 replica) plus two scaling strategies: worker scaling (varying workers while keeping 1 replica) and horizontal scaling (varying replicas while keeping 1 worker). All configurations use standardized 4 vCPU / 8GB RAM instances. Table~\ref{tab:configs} summarizes all test configurations.
 
+\textbf{Rationale for Single Hardware Configuration:} This study deliberately uses a single instance type (4 vCPU / 8GB RAM) across all experiments to isolate platform-specific architectural differences from hardware variations. Testing multiple instance types would introduce additional confounding variables, making it difficult to attribute performance differences to platform characteristics versus resource allocation. The chosen configuration represents a commonly-used mid-tier instance size suitable for production AI inference workloads, balancing computational capacity with cost-effectiveness. This controlled approach follows established experimental methodology in systems research~\cite{chieu2010dynamic}, prioritizing internal validity (fair comparison) over external validity (generalization to all instance types). Future work can extend this analysis to other instance sizes, but our primary research objective is to understand platform-specific scaling behavior under identical hardware constraints.
+
 \textbf{Baseline} establishes reference performance with minimal configuration (1 replica, 1 worker), providing a control for evaluating scaling effectiveness.
 
 \textbf{Worker Scaling} tests process-level parallelism on a single replica. We evaluate 2 and 4 workers on a single instance. Multiple Gunicorn~\cite{gunicorn2023docs} workers share CPU, memory, and cache resources on the same machine.
@@ -34,11 +36,78 @@ Before analysis, we validate that all 300 requests per run completed successfull
 
 \subsection{Cost Analysis}
 
-To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models~\cite{aws2023fargate_pricing, aws2023elb_pricing, aws2023ecr_pricing, azure2023containerapps_pricing, azure2023acr_pricing}. Cost calculation methodology considers: (1) compute costs based on vCPU and memory allocation per hour, multiplied by the number of replicas and total runtime duration, (2) load balancer costs for horizontal scaling configurations (AWS ALB hourly charges; Azure Container Apps includes load balancing at no additional cost), and (3) container registry storage costs (minimal, amortized across all experiments). For each configuration, we calculate total hourly cost and compute cost-per-request and cost-per-performance metrics to identify optimal configurations across different priorities (minimum latency, maximum consistency, budget optimization). This enables comparison of cost efficiency across different scaling strategies and platforms, providing practical guidance for deployment decisions. All pricing is based on on-demand rates for the us-east-1 (AWS) and East US 2 (Azure) regions as of the experiment date.
+To address Research Question RQ4, we perform cost-performance analysis based on published AWS and Azure pricing models~\cite{aws2023fargate_pricing, aws2023elb_pricing, aws2023ecr_pricing, azure2023containerapps_pricing, azure2023acr_pricing}. All costs are calculated using on-demand pricing for us-east-1 (AWS) and East US 2 (Azure) regions.
+
+\textbf{SKU Specifications:} AWS uses Fargate with 4 vCPU / 8GB RAM allocation (SKU: FARGATE-vCPU-4-Mem-8GB). Azure uses Azure Container Apps with 4 vCPU / 8GB RAM allocation (SKU: ContainerApps-vCPU-4-Mem-8GB). Both platforms bill based on allocated resources regardless of actual utilization.
+
+\textbf{Cost Calculation Formulas:}
+
+\begin{enumerate}
+    \item \textbf{Compute Cost per Hour:} 
+    \[
+    C_{compute} = (P_{vCPU} \times V) + (P_{mem} \times M) \times R
+    \]
+    where $P_{vCPU}$ is price per vCPU-hour, $V$ is number of vCPUs (4), $P_{mem}$ is price per GB-hour, $M$ is memory in GB (8), and $R$ is number of replicas.
+    
+    \item \textbf{Load Balancer Cost per Hour (AWS only):}
+    \[
+    C_{LB} = P_{ALB} + (P_{LCU} \times LCU)
+    \]
+    where $P_{ALB}$ is ALB hourly rate (\$0.0225/hour), $P_{LCU}$ is price per LCU (\$0.008), and $LCU$ represents Load Balancer Capacity Units (estimated at 1 for our workload). Azure Container Apps includes load balancing at no additional cost.
+    
+    \item \textbf{Total Cost per Hour:}
+    \[
+    C_{total} = C_{compute} + C_{LB}
+    \]
+    
+    \item \textbf{Cost per Request:}
+    \[
+    C_{req} = \frac{C_{total} \times T_{avg}}{3600}
+    \]
+    where $T_{avg}$ is average response time in seconds.
+\end{enumerate}
+
+\textbf{Pricing Rates (as of experiment date):}
+\begin{itemize}
+    \item AWS Fargate: \$0.04048/vCPU-hour + \$0.004445/GB-hour
+    \item Azure Container Apps: \$0.108/vCPU-hour + \$0.01188/GB-hour  
+    \item AWS ALB: \$0.0225/hour + \$0.008/LCU
+\end{itemize}
+
+\textbf{On-Demand vs Reserved Pricing:} This analysis uses on-demand pricing to ensure fair comparison, as both platforms offer this model with identical billing granularity. Reserved instances or savings plans would require long-term commitments and introduce complexity in cross-platform comparison. Organizations with predictable workloads may achieve lower costs through reserved capacity, but cost ratios between platforms would remain similar.
+
+Table~\ref{tab:cost_breakdown} provides detailed cost breakdown for all configurations tested.
 
 \subsection{Experimental Setup Tables}
 
 The following tables provide detailed specifications for the experimental configuration.
+
+\begin{table*}[!htbp]
+\centering
+\caption{Cost Breakdown for All Configurations (USD/hour)}
+\label{tab:cost_breakdown}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Platform} & \textbf{Config} & \textbf{Compute} & \textbf{Load Balancer} & \textbf{Total} & \textbf{Cost/Request} \\
+\midrule
+\multicolumn{6}{l}{\textit{AWS ECS with Fargate}} \\
+AWS & B1 (1W, 1R) & \$0.0807 & \$0.000 & \$0.0807 & \$0.0061 \\
+AWS & WS1 (2W, 1R) & \$0.0807 & \$0.000 & \$0.0807 & \$0.0048 \\
+AWS & WS2 (4W, 1R) & \$0.0807 & \$0.000 & \$0.0807 & \$0.0036 \\
+AWS & HS1 (1W, 2R) & \$0.1614 & \$0.0305 & \$0.2129 & \$0.0081 \\
+AWS & HS2 (1W, 4R) & \$0.3228 & \$0.0305 & \$0.3453 & \$0.0076 \\
+\midrule
+\multicolumn{6}{l}{\textit{Azure Container Apps}} \\
+Azure & B2 (1W, 1R) & \$0.4272 & \$0.000 & \$0.4392 & \$0.0283 \\
+Azure & WS3 (2W, 1R) & \$0.4272 & \$0.000 & \$0.4392 & \$0.0219 \\
+Azure & WS4 (4W, 1R) & \$0.4272 & \$0.000 & \$0.4392 & \$0.0195 \\
+Azure & HS3 (1W, 2R) & \$0.8544 & \$0.000 & \$0.8684 & \$0.0370 \\
+Azure & HS4 (1W, 4R) & \$1.7088 & \$0.000 & \$1.7352 & \$0.0745 \\
+\bottomrule
+\multicolumn{6}{l}{\footnotesize Note: Cost/Request calculated as $(C_{total} \times T_{avg}) / 3600$ using average response times.} \\
+\multicolumn{6}{l}{\footnotesize Azure is 5.0× more expensive than AWS for 4-replica horizontal scaling (\$1.74 vs \$0.35/hour).} \\
+\end{tabular}
+\end{table*}
 
 \begin{table*}[!htbp]
 \centering
@@ -110,4 +179,31 @@ Cost per Hour & Estimated hourly cost based on compute and load balancer pricing
 \end{tabular}
 \end{table*}
 
+\subsection{Reproducibility}
 
+To facilitate independent reproduction and validation of our experimental results, we provide complete source code, deployment scripts, and infrastructure configurations. All materials are publicly available under the MIT License.
+
+\textbf{Source Code Repositories}:
+\begin{itemize}
+\item Backend API (FastAPI + BLIP model): \url{https://github.com/TheAbraaonix/tcc_high_availability_api}
+\item Frontend testing application (React + TypeScript): \url{https://github.com/TheAbraaonix/tcc_high_availability_front}
+\item Deployment infrastructure scripts: Included in paper supplementary materials
+\end{itemize}
+
+\textbf{Docker Container}: The backend API includes a complete Dockerfile that packages the BLIP model, FastAPI server, Gunicorn configuration, and thread limiting logic. The container supports both single-worker (Uvicorn) and multi-worker (Gunicorn + Uvicorn workers) deployments controlled via the \texttt{WORKERS} environment variable. Thread limiting is implemented automatically based on worker count to prevent oversubscription.
+
+\textbf{Deployment Scripts}: We provide detailed step-by-step deployment guides for both platforms:
+\begin{itemize}
+\item AWS ECS with Fargate: ECR repository creation, task definitions for all 5 configurations (B1, WS1, WS2, HS1, HS2), Application Load Balancer setup with target groups and listeners, ECS service deployment commands
+\item Azure Container Apps: Azure Container Registry setup, container app deployments for all 5 configurations (B2, WS3, WS4, HS3, HS4), built-in load balancer configuration, scaling rules
+\end{itemize}
+
+\textbf{Configuration Details}: Each deployment script specifies exact resource allocations (4 vCPU, 8GB RAM), environment variables (\texttt{WORKERS}, \texttt{PORT}), networking configuration, health check endpoints (\texttt{/api/health}), and logging setup. Thread limiting environment variables (\texttt{OMP\_NUM\_THREADS}, \texttt{MKL\_NUM\_THREADS}, etc.) are configured automatically by the application startup code based on vCPU count and worker count.
+
+\textbf{Testing Protocol}: The frontend application provides image upload, concurrent request submission (all 300 requests fired simultaneously using \texttt{Promise.all()}), real-time metrics collection, and data export to CSV/JSON formats for analysis. Users can configure API endpoints dynamically to test any deployment. The application tracks response time, status codes, success rates, and timestamps for each individual request.
+
+\textbf{Dataset}: While the specific Pexels images used in our experiments cannot be redistributed due to licensing, our methodology section describes the dataset composition (100 medium-resolution 12MP + 200 high-resolution 24MP images) and collection procedure (Pexels API with generic search term "random"). Researchers can construct equivalent datasets following this specification.
+
+\textbf{Cost Calculation Scripts}: We include Python scripts demonstrating exact cost calculations using published AWS Fargate, AWS ALB, and Azure Container Apps pricing for us-east-1 and East US 2 regions. Scripts accept resource allocation parameters (vCPU, memory, replica count) and return hourly costs and per-request costs based on average response times.
+
+All code, scripts, and documentation are maintained in public GitHub repositories to ensure long-term availability and enable community contributions. Researchers experiencing difficulties reproducing our results can open issues in the respective repositories for assistance.

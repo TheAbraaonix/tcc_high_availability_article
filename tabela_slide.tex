@@ -1,0 +1,36 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{graphicx}
+
+% Define checkmark and cross symbols
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+\begin{document}
+
+\begin{table}[h]
+\centering
+\caption{Comparação com Trabalhos Relacionados}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Estudo} & \rotatebox{90}{\textbf{Hardware Idêntico}} & \rotatebox{90}{\textbf{Aplicação IA}} & \rotatebox{90}{\textbf{Comparação de Escalonamento}} & \rotatebox{90}{\textbf{Foco em CPU}} \\
+\midrule
+Li et al. (2013) & \xmark & \xmark & \xmark & \xmark \\
+TensorFlow Serving & N/A & \cmark & \xmark & \xmark \\
+MLPerf & \xmark & \cmark & \xmark & Parcial \\
+\midrule
+\textbf{Este Trabalho} & \textbf{\cmark} & \textbf{\cmark} & \textbf{\cmark} & \textbf{\cmark} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+
+\footnotesize{\cmark~= Sim; \xmark~= Não}
+\end{table}
+
+\end{document}

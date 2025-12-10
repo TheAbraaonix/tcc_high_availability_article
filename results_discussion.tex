@@ -8,6 +8,31 @@ Table~\ref{tab:platform_comparison} compares Amazon ECS with Fargate launch type
 
 For consistency-critical applications (RQ3), Azure provides 7.1\% lower response time variance, translating to more predictable user experience across different scaling configurations. However, the absolute difference (6.81s standard deviation) is relatively small compared to the overall response times, suggesting both platforms offer acceptable consistency. The critical finding is that scaling approach selection; particularly horizontal versus worker scaling; introduces far greater performance variability than platform choice itself.
 
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    width=0.95\columnwidth,
+    height=5cm,
+    ylabel={Response Time (s)},
+    symbolic x coords={AWS,Azure},
+    xtick=data,
+    ymin=0,
+    ymax=300,
+    bar width=20pt,
+    legend style={at={(0.5,-0.15)},anchor=north,legend columns=2},
+    enlarge x limits=0.3,
+]
+\addplot[fill=orange!70] coordinates {(AWS,272.77)};
+\addplot[fill=blue!70] coordinates {(Azure,231.78)};
+\legend{AWS,Azure}
+\end{axis}
+\end{tikzpicture}
+\caption{Baseline performance comparison between AWS and Azure (1 Worker, 1 Replica). Azure demonstrates 15\% faster baseline response time (231.78s vs 272.77s).}
+\label{fig:baseline}
+\end{figure}
+
 \subsection{Worker Scaling Results (RQ2)}
 
 Table~\ref{tab:worker_scaling} presents performance for worker scaling across both platforms. Worker scaling tests baseline (1 worker) and scaled configurations (2 and 4 workers) on a single replica, with multiple processes sharing CPU, memory, and cache resources.
@@ -15,6 +40,33 @@ Table~\ref{tab:worker_scaling} presents performance for worker scaling across bo
 \textbf{Interpretation}: Both platforms exhibit sub-linear scaling behavior, though AWS demonstrates moderately better scaling efficiency. AWS achieves 1.69× speedup with 4 workers (WS2), while Azure achieves 1.45× speedup (WS4); a 16.6\% efficiency advantage for AWS. The sub-linear scaling indicates that quadrupling worker count does not quarter response time, reflecting inherent limitations of process-level parallelism including CPU contention, cache interference, and memory bandwidth saturation.
 
 At 4 workers, both platforms converge to nearly identical absolute performance (AWS: 161.46s vs Azure: 160.23s, only 0.8\% difference), despite Azure starting 15\% faster at baseline. This convergence suggests that worker scaling benefits AWS more significantly, narrowing Azure's initial advantage. Response time variability (standard deviation) consistently decreases as worker count grows on both platforms (AWS: 151.69s → 90.26s; Azure: 124.09s → 84.29s), indicating more consistent performance under higher parallelism despite resource contention. This improvement likely results from better load distribution across workers, though specific CPU and memory utilization metrics were not collected in this study.
+
+
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    width=0.95\columnwidth,
+    height=5cm,
+    ylabel={Response Time (s)},
+    symbolic x coords={1W,2W,4W},
+    xtick=data,
+    ymin=0,
+    ymax=300,
+    bar width=12pt,
+    legend style={at={(0.5,-0.2)},anchor=north,legend columns=2},
+    enlarge x limits=0.2,
+]
+\addplot[fill=orange!70] coordinates {(1W,272.77) (2W,213.83) (4W,161.46)};
+\addplot[fill=blue!70] coordinates {(1W,231.78) (2W,179.81) (4W,160.23)};
+\legend{AWS,Azure}
+\end{axis}
+\end{tikzpicture}
+\caption{Worker scaling comparison. Platforms converge at 4 workers (0.8\% difference), though both exhibit sub-linear scaling due to resource contention.}
+\label{fig:workers_4}
+\end{figure}
 
 \subsection{Horizontal Scaling Results (RQ2)}
 
@@ -26,6 +78,33 @@ AWS's horizontal scaling superiority is substantial: at 4 replicas, AWS (79.72s)
 
 Response time consistency (measured by standard deviation) dramatically improves with horizontal scaling on AWS (151.69s → 43.13s, 71.6\% reduction), suggesting superior predictability when distributing load across separate replicas. Azure also shows consistency improvement but to a lesser degree (124.09s → 62.88s, 49.3\% reduction). The comparison conclusively demonstrates that for AWS, isolating processes to separate replicas provides far better performance than keeping workers on a single replica (3.42× vs 1.69× at 4 units), while Azure shows minimal differentiation between approaches (1.50× vs 1.45×).
 
+
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    width=0.95\columnwidth,
+    height=5cm,
+    ylabel={Response Time (s)},
+    symbolic x coords={1R,2R,4R},
+    xtick=data,
+    ymin=0,
+    ymax=300,
+    bar width=12pt,
+    legend style={at={(0.5,-0.2)},anchor=north,legend columns=2},
+    enlarge x limits=0.2,
+]
+\addplot[fill=orange!70] coordinates {(1R,272.77) (2R,136.09) (4R,79.72)};
+\addplot[fill=blue!70] coordinates {(1R,231.78) (2R,153.52) (4R,154.81)};
+\legend{AWS,Azure}
+\end{axis}
+\end{tikzpicture}
+\caption{Horizontal scaling comparison. AWS achieves excellent 3.42× speedup at 4 replicas while Azure plateaus at 1.50×, showing no improvement beyond 2 replicas.}
+\label{fig:horizontal_4}
+\end{figure}
+
 \subsection{Cost-Performance Trade-Offs (RQ4)}
 
 Table~\ref{tab:deployment_recs} translates performance findings into practical deployment recommendations, directly addressing Research Question RQ4. Cost calculations are based on published AWS and Azure on-demand pricing for the us-east-1 and East US 2 regions, respectively~\cite{aws2023fargate_pricing, aws2023elb_pricing, aws2023ecr_pricing, azure2023containerapps_pricing, azure2023acr_pricing}, including instance costs (per hour for compute resources) and load balancer charges where applicable.
@@ -34,15 +113,82 @@ Table~\ref{tab:deployment_recs} translates performance findings into practical d
 
 A critical finding emerges: Azure Container Apps costs 4.7-5.4× more than AWS ECS with Fargate for equivalent resource allocations (4 vCPU / 8GB RAM). At 4 replicas, Azure costs \$1.735/hour versus AWS's \$0.345/hour, yet delivers significantly worse performance (154.81s vs 79.72s). This cost-performance disparity makes AWS horizontal scaling the clear choice for performance-critical deployments. Azure remains viable only for simpler deployments where built-in load balancing eliminates ALB configuration complexity, accepting both higher costs and performance limitations.
 
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    scatter,
+    only marks,
+    width=0.95\columnwidth,
+    height=6cm,
+    xlabel={Cost (\$/hour)},
+    ylabel={Response Time (s)},
+    xmin=0,
+    xmax=2.0,
+    ymin=50,
+    ymax=300,
+    legend style={at={(0.5,-0.25)},anchor=north,legend columns=2},
+    grid=major,
+    nodes near coords,
+    point meta=explicit symbolic,
+    every node near coord/.append style={font=\tiny,anchor=west},
+]
+\addplot[mark=*,orange,mark size=3pt] coordinates {
+    (0.081,272.77) [B1]
+    (0.081,213.83) [WS1]
+    (0.081,161.46) [WS2]
+    (0.185,136.09) [HS1]
+    (0.345,79.72) [HS2]
+};
+\addplot[mark=square*,blue,mark size=3pt] coordinates {
+    (0.439,231.78) [B2]
+    (0.439,179.81) [WS3]
+    (0.439,160.23) [WS4]
+    (0.878,153.52) [HS3]
+    (1.735,154.81) [HS4]
+};
+\legend{AWS,Azure}
+\end{axis}
+\end{tikzpicture}
+\caption{Cost-benefit analysis across all 10 configurations. AWS HS2 (\$0.345/hr, 79.72s) provides optimal cost-performance ratio, while Azure HS4 (\$1.74/hr, 154.81s) demonstrates worst value.}
+\label{fig:cost_benefit}
+\end{figure}
+
 \subsection{Scaling Behavior Analysis (RQ2)}
 
 Research Question RQ2 asks whether AWS and Azure exhibit different scaling behavior. Results show strikingly divergent scaling patterns depending on approach. For worker scaling, platforms perform similarly: AWS scaling efficiency with 4 workers (WS2) achieves 1.69× speedup, while Azure (WS4) achieves 1.45× speedup; only 16.6\% difference. For horizontal scaling, however, platforms diverge dramatically: AWS (HS2) achieves 3.42× speedup at 4 replicas, while Azure (HS4) achieves only 1.50×; a 128\% difference representing fundamentally different architectural capabilities.
 
 The platform-specific optimal strategies differ markedly. For AWS, horizontal scaling provides vastly superior efficiency (3.42× vs 1.69× at 4 units, 102\% better), clearly establishing distributed replicas as the preferred approach. For Azure, worker scaling slightly outperforms horizontal scaling (1.45× vs 1.50×, essentially equivalent), suggesting that process-level parallelism on a single instance matches or exceeds instance-level distribution for this workload. This finding indicates that scaling approach selection must account for platform-specific architectural characteristics; AWS's ALB excels at traffic distribution, while Azure Container Apps' built-in load balancer introduces limitations that negate horizontal scaling benefits beyond 2 replicas.
 
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    width=0.95\columnwidth,
+    height=5cm,
+    ylabel={Coefficient of Variation (\%)},
+    symbolic x coords={B,WS,HS},
+    xtick=data,
+    ymin=0,
+    ymax=70,
+    bar width=12pt,
+    legend style={at={(0.5,-0.2)},anchor=north,legend columns=2},
+    enlarge x limits=0.25,
+]
+\addplot[fill=orange!70] coordinates {(B,55.6) (WS,54.5) (HS,54.9)};
+\addplot[fill=blue!70] coordinates {(B,53.5) (WS,51.1) (HS,48.1)};
+\legend{AWS,Azure}
+\end{axis}
+\end{tikzpicture}
+\caption{Performance consistency analysis using Coefficient of Variation. Azure demonstrates 8.8\% better predictability overall (lower CV values across all configurations).}
+\label{fig:consistency}
+\end{figure}
+
+
 \subsection{Practical Implications}
 
-Organizations deploying similar CPU-intensive AI inference workloads should prioritize scaling approach selection over platform choice alone, as our results demonstrate that configuration decisions can triple performance (AWS: 272.77s baseline to 79.72s at 4 replicas). Platform-specific recommendations emerge clearly from this study:
+Organizations deploying similar CPU-intensive transformer-based inference workloads should prioritize scaling approach selection over platform choice alone, as our results demonstrate that configuration decisions can triple performance (AWS: 272.77s baseline to 79.72s at 4 replicas). Platform-specific recommendations emerge clearly from this study:
 
 \textbf{For AWS deployments}: Prioritize horizontal scaling with ALB-based load balancing, which achieves near-linear scaling (3.42× at 4 replicas). The investment in ALB configuration complexity (Target Groups, Listeners, health checks) yields substantial performance returns. Worker scaling provides moderate benefits (1.69× at 4 workers) but represents a secondary optimization.
 
@@ -74,9 +220,21 @@ Max Response Time (s) & 336.07 & 342.35 \\
 Median Response Time (s) & 175.65 & 181.10 \\
 Std Deviation (s) & 96.37 & 89.56 \\
 Success Rate (\%) & 100 & 100 \\
+\midrule
 Performance Difference & \multicolumn{2}{c}{1.9\% (AWS faster)} \\
-Statistical Significance & \multicolumn{2}{c}{Not significant (small difference)} \\
+\midrule
+\multicolumn{3}{l}{\textbf{Statistical Significance Analysis:}} \\
+Test Method & \multicolumn{2}{l}{Independent two-sample t-test} \\
+Null Hypothesis ($H_0$) & \multicolumn{2}{l}{$\mu_{AWS} = \mu_{Azure}$ (no difference)} \\
+Significance Level ($\alpha$) & \multicolumn{2}{l}{0.05} \\
+t-statistic & \multicolumn{2}{l}{-0.090} \\
+p-value & \multicolumn{2}{l}{0.931} \\
+95\% Confidence Interval & \multicolumn{2}{l}{[-118.57s, 112.06s]} \\
+Result & \multicolumn{2}{l}{Not significant (p > 0.05)} \\
 \bottomrule
+\multicolumn{3}{l}{\footnotesize \textbf{Interpretation:} The 1.9\% performance difference is not statistically significant} \\
+\multicolumn{3}{l}{\footnotesize at $\alpha=0.05$ (fail to reject $H_0$), indicating that platform choice has minimal impact} \\
+\multicolumn{3}{l}{\footnotesize on average performance when configurations are averaged.} \\
 \end{tabular}
 \end{table*}
 

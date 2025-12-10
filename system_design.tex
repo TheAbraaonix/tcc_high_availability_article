@@ -14,7 +14,7 @@ Our experimental system consists of four primary components working together to 
 
 \subsection{Critical Implementation Challenges}
 
-Deploying multi-worker Python-based AI inference services revealed several critical challenges that required careful design decisions. These challenges are fundamental to CPU-intensive AI workloads and generalize beyond our specific BLIP implementation.
+Deploying multi-worker Python-based transformer inference services revealed several critical challenges that required careful design decisions. While these challenges emerged in our BLIP deployment, they apply broadly to CPU-intensive Python workloads using numerical libraries (PyTorch, TensorFlow, NumPy) with similar characteristics: multi-second blocking operations, GIL constraints, and thread pool management.
 
 \subsubsection{Challenge 1: CPU Thread Oversubscription}
 
